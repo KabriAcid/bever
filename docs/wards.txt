@@ -1,0 +1,12 @@
+| Ward Name      | Code    |
+| -------------- | ------- |
+| Abbare Yelwa   | JLG-W01 |
+| Barade         | JLG-W02 |
+| Kachalla Sembe | JLG-W03 |
+| Kona           | JLG-W04 |
+| Majidadi       | JLG-W05 |
+| Mayo Goi       | JLG-W06 |
+| Sarkin Dawaki  | JLG-W07 |
+| Sintali        | JLG-W08 |
+| Turaki ‘A’     | JLG-W09 |
+| Turaki ‘B’     | JLG-W10 |

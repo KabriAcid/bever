@@ -1,0 +1,56 @@
+{
+  "city": "Jalingo",
+  "state": "Taraba",
+  "wards": [
+    {
+      "name": "Abbare Yelwa",
+      "code": "JLG-W01",
+      "sub_areas": ["Abbare", "Kasuwan Yelwa", "Sabongari", "Tudun Wada"]
+    },
+    {
+      "name": "Barade",
+      "code": "JLG-W02",
+      "sub_areas": ["Baraya", "Dorowa", "Pasli", "Fan"]
+    },
+    {
+      "name": "Kachalla Sembe",
+      "code": "JLG-W03",
+      "sub_areas": ["Kanbi", "Kalanko", "Murbai"]
+    },
+    {
+      "name": "Kona",
+      "code": "JLG-W04",
+      "sub_areas": ["Kona Manga", "Magani", "Okona"]
+    },
+    {
+      "name": "Majidadi",
+      "code": "JLG-W05",
+      "sub_areas": ["Jekadafari", "Saurara", "Petal"]
+    },
+    {
+      "name": "Mayo Goi",
+      "code": "JLG-W06",
+      "sub_areas": ["Mayo Goi", "Porni", "Todiri"]
+    },
+    {
+      "name": "Sarkin Dawaki",
+      "code": "JLG-W07",
+      "sub_areas": ["Sarkin Dawaki", "Mallam Ali", "Jauro Yeno"]
+    },
+    {
+      "name": "Sintali",
+      "code": "JLG-W08",
+      "sub_areas": ["Sintali Ward", "Iyabamuye", "Hamdella"]
+    },
+    {
+      "name": "Turaki A",
+      "code": "JLG-W09",
+      "sub_areas": ["Garin Kari", "Mudibbo", "Jauro Abba"]
+    },
+    {
+      "name": "Turaki B",
+      "code": "JLG-W10",
+      "sub_areas": ["Garin Jalo", "Jauro Awo", "Pan"]
+    }
+  ]
+}
