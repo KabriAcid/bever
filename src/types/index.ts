@@ -5,6 +5,12 @@ export interface User {
   email?: string;
   businessAddress: string;
   customerCategory: "offices" | "stores" | "individuals";
+  businessName?: string;
+  wardCode?: string;
+  wardName?: string;
+  subArea?: string;
+  beverCode?: string;
+  verificationStatus?: "pending" | "verified" | "agent-scheduled";
 }
 
 export interface Product {
@@ -45,6 +51,10 @@ export interface RegisterData {
   password: string;
   businessAddress: string;
   customerCategory: "offices" | "stores" | "individuals";
+  businessName?: string;
+  wardCode?: string;
+  wardName?: string;
+  subArea?: string;
 }
 
 export interface CartContextType {

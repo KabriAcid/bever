@@ -12,6 +12,7 @@ import {
   ChevronRight,
   KeyRound,
   Trash2,
+  BadgeCheck,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { usePin } from "../contexts/PinContext";
@@ -57,6 +58,28 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
       default:
         return category;
     }
+  };
+
+  const statusBadge = (status?: string) => {
+    const map: Record<string, { text: string; cls: string }> = {
+      pending: {
+        text: "Pending Verification",
+        cls: "bg-orange-100 text-orange-700",
+      },
+      verified: { text: "Verified", cls: "bg-green-100 text-green-700" },
+      "agent-scheduled": {
+        text: "Agent Verification Scheduled",
+        cls: "bg-blue-100 text-blue-700",
+      },
+    };
+    const s = status ? map[status] : map["pending"];
+    return (
+      <span
+        className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${s.cls}`}
+      >
+        <BadgeCheck className="w-3.5 h-3.5 mr-1" /> {s.text}
+      </span>
+    );
   };
 
   const mockOrders = [
@@ -134,13 +157,57 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
               <h2 className="text-xl font-semibold text-gray-900">
                 {user?.fullName}
               </h2>
-              <p className="text-gray-600 text-sm">
-                {getCategoryLabel(user?.customerCategory || "")}
-              </p>
+              <div className="mt-1 flex items-center space-x-2">
+                {statusBadge(user?.verificationStatus)}
+                {user?.beverCode && (
+                  <span className="text-xs text-gray-600">
+                    Code:{" "}
+                    <span className="font-medium text-gray-800">
+                      {user.beverCode}
+                    </span>
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
-          {isEditing ? (
+          {!isEditing ? (
+            <div className="space-y-4">
+              {user?.businessName && (
+                <div className="flex items-center space-x-3">
+                  <Building className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-900">{user.businessName}</span>
+                </div>
+              )}
+
+              <div className="flex items-center space-x-3">
+                <Phone className="w-5 h-5 text-gray-400" />
+                <span className="text-gray-900">{user?.phoneNumber}</span>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <MapPin className="w-5 h-5 text-gray-400" />
+                <span className="text-gray-900">{user?.businessAddress}</span>
+              </div>
+
+              {(user?.wardName || user?.subArea) && (
+                <div className="flex items-center space-x-3">
+                  <MapPin className="w-5 h-5 text-gray-400" />
+                  <span className="text-gray-900">
+                    {user?.wardName}
+                    {user?.subArea ? ` • ${user.subArea}` : ""}
+                  </span>
+                </div>
+              )}
+
+              <div className="flex items-center space-x-3">
+                <Building className="w-5 h-5 text-gray-400" />
+                <span className="text-gray-900">
+                  {getCategoryLabel(user?.customerCategory || "")}
+                </span>
+              </div>
+            </div>
+          ) : (
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -230,25 +297,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
                 >
                   Cancel
                 </motion.button>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-900">{user?.phoneNumber}</span>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-900">{user?.businessAddress}</span>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <Building className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-900">
-                  {getCategoryLabel(user?.customerCategory || "")}
-                </span>
               </div>
             </div>
           )}

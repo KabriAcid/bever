@@ -1,6 +1,6 @@
 # Bever
 
-Design and generate a premium, minimalist, UX-focused, mobile-first beverages ordering app UI named Bever (focused on water and soft drinks delivery in Jalingo) using:
+Design and generate a premium, minimalist, UX-focused, mobile-first beverages ordering app UI named Bever (focused on water, juices, energy drinks, and soft drinks delivery in Jalingo) using:
 
 - React + TypeScript + Vite
 - React Router DOM
@@ -84,6 +84,27 @@ Technical implementation:
 
 ---
 
+## Referral Rewards
+
+- Each user’s Bever Code is sharable for referrals.
+- When a friend signs up with your code:
+  - Referrer: ₦500 wallet credit (usable on next order)
+  - New user: free delivery on first order
+
+## Bonuses
+
+- Bulk Bonus: Buy 10 packs of water, get 1 free
+- Streak Bonus: Order weekly for a month → ₦1000 bonus credit
+
+## Monthly Promos
+
+- Align promos to salary week (end/beginning of month)
+- Examples:
+  - “September Saver: 10% off Coca-Cola packs for offices”
+  - “Back-to-school: Buy Eva water, get a free sachet pack for kids”
+
+---
+
 ## Catalog & Product Details
 
 - Display beverages organized into a structured hierarchy:
@@ -162,11 +183,5 @@ Unit: Pack (24), Piece
 - Ensure key flows work offline-first (data saved until upload)
 
 ---
-
-## Development
-
-- Dev: `npm run dev`
-- Build: `npm run build`
-- Preview: `npm run preview`
 
 Note: Beverages focus on water and soft drinks; structure should allow future extension to juices, energy drinks, etc.
