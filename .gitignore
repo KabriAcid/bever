@@ -22,3 +22,5 @@ out
 storybook-static
 /.vercel
 /.netlify
+README.md
+/docs
