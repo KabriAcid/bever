@@ -109,14 +109,39 @@ Technical implementation:
 
 - Display beverages organized into a structured hierarchy:
 
-  - **Category** → Water | Soft Drinks
-  - **Brand** → Coca-Cola, Pepsi, Eva, Swan, etc.
+  - **Category** → Water | Soft Drinks (extendable: Juices, Energy Drinks)
+  - **Brand (category‑scoped)** →
+    - Water: Eva, Ragolis, Swan, Aquafina
+    - Soft Drinks: Coca‑Cola, Pepsi, Fanta, Sprite, 7UP, Mirinda
+    - Juices: Chivita, Five Alive, Hollandia
+    - Energy Drinks: Monster, Red Bull, Fearless
   - **Branch/Packaging** → Sachet, Bottle, Can
   - **Volume Options** → 50cl, 75cl, 1L, 1.5L, etc.
   - **Purchase Unit** → Pack (e.g., 12, 24) or Piece
 
 - Search and filter options.
 - Product grid/cards with quick access to add-to-cart.
+
+### Product Filters
+
+Provide fast, multi-select filters to narrow products:
+
+- By Volume: 33cl, 35cl, 50cl, 75cl, 1L, 1.5L, 2L
+- By Brand (scoped to selected Category):
+  - Water → Eva, Ragolis, Swan, Aquafina
+  - Soft Drinks → Coca‑Cola, Pepsi, Fanta, Sprite, 7UP, Mirinda
+  - Juices → Chivita, Five Alive, Hollandia
+  - Energy Drinks → Monster, Red Bull, Fearless
+- By Container/Packaging: Sachet, Bottle (PET/Glass), Can
+- By Unit: Pack (12, 24), Piece
+- By Category: Water, Soft Drinks (optionally Juices, Energy Drinks)
+
+UX guidance:
+
+- Brand filter options should update dynamically when Category changes.
+- Use chip-style toggles (multi-select), show active count, and a clear-all action.
+- Place as a horizontal, scrollable bar under the search on mobile; collapsible panel on larger screens.
+- Persist selection per session; show result count and a friendly empty state.
 
 ---
 
