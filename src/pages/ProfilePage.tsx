@@ -241,7 +241,7 @@ const ProfilePage: React.FC = () => {
             onClick={() => setShowCoverPhoto(true)}
             className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-lg hover:bg-black/70 transition-colors"
           >
-            <Camera className="w-5 h-5" />
+            <Camera className="icon-responsive" />
           </button>
         </div>
 
@@ -324,13 +324,13 @@ const ProfilePage: React.FC = () => {
           {/* Quick Actions */}
           <div className="card">
             <h3 className="font-medium text-primary-950 mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid-responsive-2 gap-3">
               <button
                 className="flex items-center gap-3 p-3 bg-primary-50 rounded-xl hover:bg-primary-100 transition-colors"
                 onClick={handleCopyCode}
               >
-                <Share2 className="w-5 h-5 text-primary-600" />
-                <span className="text-sm font-medium text-primary-950">
+                <Share2 className="icon-responsive text-primary-600" />
+                <span className="text-responsive font-medium text-primary-950">
                   Share Code
                 </span>
               </button>
