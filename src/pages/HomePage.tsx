@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Minus } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
-import { products, categories, brands, volumes, packagingTypes, units } from '../data/products';
-import { Product } from '../data/products';
+import { products, categories, brands, volumes } from '../data/products';
 
 const HomePage: React.FC = () => {
   const { user } = useAuth();

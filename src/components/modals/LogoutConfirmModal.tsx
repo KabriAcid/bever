@@ -30,15 +30,15 @@ const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({
           </p>
         </div>
 
-        <div className="flex gap-3 pt-4">
-          <button onClick={onClose} className="btn-primary flex-1">
-            Stay Logged In
+        <div className="flex justify-between pt-4">
+          <button onClick={onClose} className="btn-primary">
+            Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="btn-secondary flex-1 text-red-600 hover:bg-red-50 hover:text-red-700"
+            className="btn-secondary text-red-600 hover:bg-red-50 hover:text-red-700"
           >
-            <LogOut className="w-4 h-4 mr-2" />
+            <LogOut className="w-4 h-4 mr-2 inline" />
             Logout
           </button>
         </div>
