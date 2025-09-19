@@ -1,35 +1,70 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  User, 
-  MapPin, 
-  Phone, 
-  Shield, 
-  Camera, 
-  Edit3, 
-  LogOut, 
-  Copy, 
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  User,
+  MapPin,
+  Phone,
+  Shield,
+  Camera,
+  Edit3,
+  LogOut,
+  Copy,
   Check,
   Lock,
   Eye,
-  EyeOff
-} from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { usePin } from '../contexts/PinContext';
+  EyeOff,
+} from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { usePin } from "../contexts/PinContext";
+import EditProfileModal from "../components/modals/EditProfileModal";
+import PhotoUploadModal from "../components/modals/PhotoUploadModal";
+import SettingsModal from "../components/modals/SettingsModal";
+import LogoutConfirmModal from "../components/modals/LogoutConfirmModal";
+import type { ProfileSettings } from "../types";
 
 const ProfilePage: React.FC = () => {
   const { user, logout, updateUser } = useAuth();
   const { hasPin, setPin, verifyPin, changePin, clearPin } = usePin();
-  const [copied, setCopied] = useState(false);
+
+  // Modal states
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showShopPhoto, setShowShopPhoto] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
-  const [pinAction, setPinAction] = useState<'set' | 'change' | 'clear'>('set');
+
+  // Component states
+  const [copied, setCopied] = useState(false);
+  const [pinAction, setPinAction] = useState<"set" | "change" | "clear">("set");
   const [pinForm, setPinForm] = useState({
-    currentPin: '',
-    newPin: '',
-    confirmPin: '',
-    showPins: false
+    currentPin: "",
+    newPin: "",
+    confirmPin: "",
+    showPins: false,
   });
-  const [pinError, setPinError] = useState('');
+  const [pinError, setPinError] = useState("");
+
+  // Mock data - replace with real data
+  const [settings, setSettings] = useState<ProfileSettings>({
+    notifications: {
+      orderUpdates: true,
+      promotions: true,
+      deliveryAlerts: true,
+    },
+    app: {
+      theme: "light",
+      language: "en",
+      defaultDeliveryTime: "morning",
+    },
+    privacy: {
+      profileVisibility: "public",
+      dataSharing: false,
+    },
+    delivery: {
+      defaultAddress: user?.businessAddress || "",
+      specialInstructions: "",
+    },
+  });
 
   const handleCopyCode = () => {
     if (user?.beverCode) {
@@ -39,20 +74,16 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-  };
-
   const getVerificationBadge = () => {
     switch (user?.verificationStatus) {
-      case 'Verified':
+      case "Verified":
         return (
           <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent-100 text-accent-700 text-xs font-medium rounded-full">
             <Check className="w-3 h-3" />
             Verified
           </span>
         );
-      case 'Agent Visit':
+      case "Agent Visit":
         return (
           <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
             <Shield className="w-3 h-3" />
@@ -69,58 +100,67 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const openPinModal = (action: 'set' | 'change' | 'clear') => {
+  const openPinModal = (action: "set" | "change" | "clear") => {
     setPinAction(action);
     setShowPinModal(true);
     setPinForm({
-      currentPin: '',
-      newPin: '',
-      confirmPin: '',
-      showPins: false
+      currentPin: "",
+      newPin: "",
+      confirmPin: "",
+      showPins: false,
     });
-    setPinError('');
+    setPinError("");
   };
 
   const handlePinSubmit = () => {
-    setPinError('');
+    setPinError("");
 
-    if (pinAction === 'set') {
+    if (pinAction === "set") {
       if (pinForm.newPin.length < 4) {
-        setPinError('PIN must be at least 4 digits');
+        setPinError("PIN must be at least 4 digits");
         return;
       }
       if (pinForm.newPin !== pinForm.confirmPin) {
-        setPinError('PINs do not match');
+        setPinError("PINs do not match");
         return;
       }
       setPin(pinForm.newPin);
       setShowPinModal(false);
-    } else if (pinAction === 'change') {
+    } else if (pinAction === "change") {
       if (!verifyPin(pinForm.currentPin)) {
-        setPinError('Current PIN is incorrect');
+        setPinError("Current PIN is incorrect");
         return;
       }
       if (pinForm.newPin.length < 4) {
-        setPinError('New PIN must be at least 4 digits');
+        setPinError("New PIN must be at least 4 digits");
         return;
       }
       if (pinForm.newPin !== pinForm.confirmPin) {
-        setPinError('New PINs do not match');
+        setPinError("New PINs do not match");
         return;
       }
       if (changePin(pinForm.currentPin, pinForm.newPin)) {
         setShowPinModal(false);
       } else {
-        setPinError('Failed to change PIN');
+        setPinError("Failed to change PIN");
       }
-    } else if (pinAction === 'clear') {
+    } else if (pinAction === "clear") {
       if (!verifyPin(pinForm.currentPin)) {
-        setPinError('Current PIN is incorrect');
+        setPinError("Current PIN is incorrect");
         return;
       }
       clearPin();
       setShowPinModal(false);
     }
+  };
+
+  const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    logout();
+    setShowLogoutConfirm(false);
   };
 
   return (
@@ -151,7 +191,11 @@ const ProfilePage: React.FC = () => {
               onClick={handleCopyCode}
               className="p-2 text-primary-600 hover:text-primary-950 transition-colors"
             >
-              {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+              {copied ? (
+                <Check className="w-5 h-5" />
+              ) : (
+                <Copy className="w-5 h-5" />
+              )}
             </button>
           </div>
           <p className="text-xs text-primary-600 mt-2">
@@ -162,24 +206,33 @@ const ProfilePage: React.FC = () => {
         {/* Business Information */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium text-primary-950">Business Information</h3>
-            <button className="p-2 text-primary-600 hover:text-primary-950 transition-colors">
+            <h3 className="font-medium text-primary-950">
+              Business Information
+            </h3>
+            <button
+              onClick={() => setShowEditProfile(true)}
+              className="p-2 text-primary-600 hover:text-primary-950 transition-colors"
+            >
               <Edit3 className="w-4 h-4" />
             </button>
           </div>
-          
+
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-primary-600 mt-1" />
               <div>
-                <p className="font-medium text-primary-950">{user?.businessAddress}</p>
-                <p className="text-sm text-primary-600">{user?.ward}, Jalingo</p>
+                <p className="font-medium text-primary-950">
+                  {user?.businessAddress}
+                </p>
+                <p className="text-sm text-primary-600">
+                  {user?.ward}, Jalingo
+                </p>
                 {user?.subArea && (
                   <p className="text-sm text-primary-600">{user.subArea}</p>
                 )}
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-primary-600" />
               <span className="text-primary-950">{user?.phoneNumber}</span>
@@ -191,11 +244,14 @@ const ProfilePage: React.FC = () => {
         <div className="card">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-medium text-primary-950">Shop Photo</h3>
-            <button className="p-2 text-primary-600 hover:text-primary-950 transition-colors">
+            <button
+              onClick={() => setShowShopPhoto(true)}
+              className="p-2 text-primary-600 hover:text-primary-950 transition-colors"
+            >
               <Camera className="w-4 h-4" />
             </button>
           </div>
-          
+
           {user?.shopPhoto ? (
             <div className="aspect-video bg-primary-50 rounded-xl overflow-hidden">
               <img
@@ -217,23 +273,25 @@ const ProfilePage: React.FC = () => {
         {/* Transaction PIN */}
         <div className="card">
           <h3 className="font-medium text-primary-950 mb-4">Transaction PIN</h3>
-          
+
           <div className="space-y-3">
             {hasPin ? (
               <>
                 <div className="flex items-center gap-3 p-3 bg-accent-50 rounded-xl">
                   <Lock className="w-5 h-5 text-accent-600" />
-                  <span className="text-accent-800 font-medium">PIN is set</span>
+                  <span className="text-accent-800 font-medium">
+                    PIN is set
+                  </span>
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => openPinModal('change')}
+                    onClick={() => openPinModal("change")}
                     className="btn-secondary flex-1"
                   >
                     Change PIN
                   </button>
                   <button
-                    onClick={() => openPinModal('clear')}
+                    onClick={() => openPinModal("clear")}
                     className="btn-secondary flex-1 text-red-600 hover:bg-red-50"
                   >
                     Clear PIN
@@ -244,10 +302,12 @@ const ProfilePage: React.FC = () => {
               <>
                 <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-xl">
                   <Lock className="w-5 h-5 text-orange-600" />
-                  <span className="text-orange-800 font-medium">No PIN set</span>
+                  <span className="text-orange-800 font-medium">
+                    No PIN set
+                  </span>
                 </div>
                 <button
-                  onClick={() => openPinModal('set')}
+                  onClick={() => openPinModal("set")}
                   className="btn-primary w-full"
                 >
                   Set Transaction PIN
@@ -256,6 +316,33 @@ const ProfilePage: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Settings */}
+        <button
+          onClick={() => setShowSettings(true)}
+          className="w-full flex items-center justify-center gap-3 p-4 text-primary-600 hover:bg-primary-50 rounded-xl transition-colors"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          <span className="font-medium">Settings</span>
+        </button>
 
         {/* Logout */}
         <button
@@ -280,75 +367,117 @@ const ProfilePage: React.FC = () => {
             className="bg-white rounded-2xl p-6 w-full max-w-md"
           >
             <h3 className="text-xl font-bold text-primary-950 mb-4">
-              {pinAction === 'set' && 'Set Transaction PIN'}
-              {pinAction === 'change' && 'Change Transaction PIN'}
-              {pinAction === 'clear' && 'Clear Transaction PIN'}
+              {pinAction === "set" && "Set Transaction PIN"}
+              {pinAction === "change" && "Change Transaction PIN"}
+              {pinAction === "clear" && "Clear Transaction PIN"}
             </h3>
 
             <div className="space-y-4">
-              {(pinAction === 'change' || pinAction === 'clear') && (
+              {(pinAction === "change" || pinAction === "clear") && (
                 <div className="relative">
                   <input
-                    type={pinForm.showPins ? 'text' : 'password'}
+                    type={pinForm.showPins ? "text" : "password"}
                     value={pinForm.currentPin}
-                    onChange={(e) => setPinForm(prev => ({ ...prev, currentPin: e.target.value }))}
+                    onChange={(e) =>
+                      setPinForm((prev) => ({
+                        ...prev,
+                        currentPin: e.target.value,
+                      }))
+                    }
                     placeholder="Current PIN"
                     className="input-field pr-12"
                     maxLength={6}
                   />
                   <button
                     type="button"
-                    onClick={() => setPinForm(prev => ({ ...prev, showPins: !prev.showPins }))}
+                    onClick={() =>
+                      setPinForm((prev) => ({
+                        ...prev,
+                        showPins: !prev.showPins,
+                      }))
+                    }
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-400"
                   >
-                    {pinForm.showPins ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {pinForm.showPins ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               )}
 
-              {pinAction !== 'clear' && (
+              {pinAction !== "clear" && (
                 <>
                   <div className="relative">
                     <input
-                      type={pinForm.showPins ? 'text' : 'password'}
+                      type={pinForm.showPins ? "text" : "password"}
                       value={pinForm.newPin}
-                      onChange={(e) => setPinForm(prev => ({ ...prev, newPin: e.target.value }))}
-                      placeholder={pinAction === 'set' ? 'Enter PIN' : 'New PIN'}
+                      onChange={(e) =>
+                        setPinForm((prev) => ({
+                          ...prev,
+                          newPin: e.target.value,
+                        }))
+                      }
+                      placeholder={
+                        pinAction === "set" ? "Enter PIN" : "New PIN"
+                      }
                       className="input-field pr-12"
                       maxLength={6}
                     />
                     <button
                       type="button"
-                      onClick={() => setPinForm(prev => ({ ...prev, showPins: !prev.showPins }))}
+                      onClick={() =>
+                        setPinForm((prev) => ({
+                          ...prev,
+                          showPins: !prev.showPins,
+                        }))
+                      }
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-400"
                     >
-                      {pinForm.showPins ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {pinForm.showPins ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
 
                   <div className="relative">
                     <input
-                      type={pinForm.showPins ? 'text' : 'password'}
+                      type={pinForm.showPins ? "text" : "password"}
                       value={pinForm.confirmPin}
-                      onChange={(e) => setPinForm(prev => ({ ...prev, confirmPin: e.target.value }))}
+                      onChange={(e) =>
+                        setPinForm((prev) => ({
+                          ...prev,
+                          confirmPin: e.target.value,
+                        }))
+                      }
                       placeholder="Confirm PIN"
                       className="input-field pr-12"
                       maxLength={6}
                     />
                     <button
                       type="button"
-                      onClick={() => setPinForm(prev => ({ ...prev, showPins: !prev.showPins }))}
+                      onClick={() =>
+                        setPinForm((prev) => ({
+                          ...prev,
+                          showPins: !prev.showPins,
+                        }))
+                      }
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-400"
                     >
-                      {pinForm.showPins ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      {pinForm.showPins ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
                     </button>
                   </div>
                 </>
               )}
 
-              {pinError && (
-                <p className="text-red-500 text-sm">{pinError}</p>
-              )}
+              {pinError && <p className="text-red-500 text-sm">{pinError}</p>}
 
               <div className="flex gap-3">
                 <button
@@ -361,14 +490,55 @@ const ProfilePage: React.FC = () => {
                   onClick={handlePinSubmit}
                   className="btn-primary flex-1"
                 >
-                  {pinAction === 'set' && 'Set PIN'}
-                  {pinAction === 'change' && 'Change PIN'}
-                  {pinAction === 'clear' && 'Clear PIN'}
+                  {pinAction === "set" && "Set PIN"}
+                  {pinAction === "change" && "Change PIN"}
+                  {pinAction === "clear" && "Clear PIN"}
                 </button>
               </div>
             </div>
           </motion.div>
         </motion.div>
+      )}
+
+      {/* Modals */}
+      {showEditProfile && (
+        <EditProfileModal
+          isOpen={showEditProfile}
+          onClose={() => setShowEditProfile(false)}
+          user={user}
+          onSave={updateUser}
+        />
+      )}
+
+      {showShopPhoto && (
+        <PhotoUploadModal
+          isOpen={showShopPhoto}
+          onClose={() => setShowShopPhoto(false)}
+          onSave={(photo: File) => {
+            // Convert file to URL for display purposes
+            const photoUrl = URL.createObjectURL(photo);
+            updateUser({ shopPhoto: photoUrl });
+          }}
+          title="Upload Shop Photo"
+          aspectRatio="cover"
+        />
+      )}
+
+      {showSettings && (
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          settings={settings}
+          onSave={setSettings}
+        />
+      )}
+
+      {showLogoutConfirm && (
+        <LogoutConfirmModal
+          isOpen={showLogoutConfirm}
+          onClose={() => setShowLogoutConfirm(false)}
+          onConfirm={confirmLogout}
+        />
       )}
     </div>
   );
