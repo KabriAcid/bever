@@ -1,76 +1,61 @@
-import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { CartProvider } from "./contexts/CartContext";
-import { AuthForms } from "./components/AuthForms";
-import { AppLayout } from "./components/AppLayout";
-import { motion, AnimatePresence } from "framer-motion";
-import { PinProvider, usePin } from "./contexts/PinContext";
-import { TransactionPinModal } from "./components/TransactionPinModal";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { PinProvider } from './contexts/PinContext';
+import { CartProvider } from './contexts/CartContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import TransactionPinModal from './components/TransactionPinModal';
+import Layout from './components/Layout';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import HomePage from './pages/HomePage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import ProfilePage from './pages/ProfilePage';
+import { useAuth } from './contexts/AuthContext';
+import { usePin } from './contexts/PinContext';
 
-const AppContentInner: React.FC = () => {
-  const { user, isLoading } = useAuth();
+const AppContent: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const { isSettingRequired } = usePin();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-4 border-primary-200 border-t-primary-500 rounded-full"
-        />
-      </div>
-    );
-  }
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        {user ? (
-          <motion.div
-            key="app"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <AppLayout />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="auth"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <AuthForms onSuccess={() => {}} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* Force PIN setup when logged in but no PIN */}
-      <TransactionPinModal isOpen={!!user && isSettingRequired} />
+      <Routes>
+        <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/home" />} />
+        <Route path="/register" element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/home" />} />
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
+        
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }>
+          <Route path="home" element={<HomePage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
+      </Routes>
+
+      {/* Transaction PIN Modal */}
+      <TransactionPinModal isOpen={isSettingRequired} />
     </>
   );
 };
 
-const AppContent: React.FC = () => (
-  <PinProvider>
-    <AppContentInner />
-  </PinProvider>
-);
-
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <AuthProvider>
-        <CartProvider>
-          <AppContent />
-        </CartProvider>
+        <PinProvider>
+          <CartProvider>
+            <AppContent />
+          </CartProvider>
+        </PinProvider>
       </AuthProvider>
     </Router>
   );
-}
+};
 
 export default App;
