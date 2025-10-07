@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, MapPin, CreditCard, Banknote, Copy, Check } from 'lucide-react';
-import { useCart } from '../contexts/CartContext';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  MapPin,
+  CreditCard,
+  Banknote,
+  Copy,
+  Check,
+} from "lucide-react";
+import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { getCartItemsWithDetails, getTotalPrice, clearCart } = useCart();
-  const [paymentMethod, setPaymentMethod] = useState<'transfer' | 'cash'>('transfer');
+  const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
+    "transfer"
+  );
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [showLottie, setShowLottie] = useState(false);
 
   const cartItems = getCartItemsWithDetails();
   const totalPrice = getTotalPrice();
@@ -21,9 +32,9 @@ const CheckoutPage: React.FC = () => {
 
   // Mock virtual account details
   const virtualAccount = {
-    accountNumber: '1234567890',
-    bankName: 'Providus Bank',
-    accountName: 'Bever Payments'
+    accountNumber: "1234567890",
+    bankName: "Providus Bank",
+    accountName: "Bever Payments",
   };
 
   const handleCopyAccount = () => {
@@ -34,25 +45,51 @@ const CheckoutPage: React.FC = () => {
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Clear cart and show success
       clearCart();
       setOrderPlaced(true);
-      
+
       // Redirect after showing success
       setTimeout(() => {
-        navigate('/home');
+        navigate("/home");
       }, 3000);
     } catch (error) {
-      console.error('Order failed:', error);
+      console.error("Order failed:", error);
     } finally {
       setIsProcessing(false);
     }
   };
+
+  const handleVerifyPayment = async () => {
+    // simulate verification spinner then show lottie
+    setVerifying(true);
+    try {
+      await new Promise((r) => setTimeout(r, 5000));
+      // show lottie animation overlay
+      setShowLottie(true);
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  // dynamically load lottie-player script once when needed
+  useEffect(() => {
+    if (!showLottie) return;
+    const id = "lottie-player-script";
+    if (!document.getElementById(id)) {
+      const s = document.createElement("script");
+      s.id = id;
+      s.src =
+        "https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  }, [showLottie]);
 
   if (orderPlaced) {
     return (
@@ -65,13 +102,13 @@ const CheckoutPage: React.FC = () => {
           <div className="w-20 h-20 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="w-10 h-10 text-accent-600" />
           </div>
-          <h2 className="text-2xl font-bold text-primary-950 mb-2">Order Placed!</h2>
+          <h2 className="text-2xl font-bold text-primary-950 mb-2">
+            Order Placed!
+          </h2>
           <p className="text-primary-600 mb-4">
             Your order has been received and is being processed
           </p>
-          <p className="text-sm text-primary-500">
-            Redirecting to home...
-          </p>
+          <p className="text-sm text-primary-500">Redirecting to home...</p>
         </motion.div>
       </div>
     );
@@ -83,7 +120,7 @@ const CheckoutPage: React.FC = () => {
       <div className="sticky top-0 bg-white border-b border-primary-100 px-6 py-4 z-10">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/cart')}
+            onClick={() => navigate("/cart")}
             className="p-2 hover:bg-primary-100 rounded-xl transition-colors"
           >
             <ArrowLeft className="w-6 h-6 text-primary-700" />
@@ -98,9 +135,13 @@ const CheckoutPage: React.FC = () => {
           <div className="flex items-start gap-3 mb-4">
             <MapPin className="w-5 h-5 text-primary-600 mt-1" />
             <div className="flex-1">
-              <h3 className="font-medium text-primary-950 mb-1">Delivery Address</h3>
+              <h3 className="font-medium text-primary-950 mb-1">
+                Delivery Address
+              </h3>
               <p className="text-primary-700">{user?.businessName}</p>
-              <p className="text-primary-600 text-sm">{user?.businessAddress}</p>
+              <p className="text-primary-600 text-sm">
+                {user?.businessAddress}
+              </p>
               <p className="text-primary-600 text-sm">{user?.ward}, Jalingo</p>
             </div>
           </div>
@@ -111,7 +152,10 @@ const CheckoutPage: React.FC = () => {
           <h3 className="font-medium text-primary-950 mb-4">Order Summary</h3>
           <div className="space-y-3">
             {cartItems.map(({ productId, quantity, product }) => (
-              <div key={productId} className="flex justify-between items-center">
+              <div
+                key={productId}
+                className="flex justify-between items-center"
+              >
                 <div className="flex-1">
                   <p className="font-medium text-primary-950">{product.name}</p>
                   <p className="text-sm text-primary-600">
@@ -123,7 +167,7 @@ const CheckoutPage: React.FC = () => {
                 </span>
               </div>
             ))}
-            
+
             <div className="border-t border-primary-200 pt-3 space-y-2">
               <div className="flex justify-between text-primary-700">
                 <span>Subtotal</span>
@@ -131,7 +175,11 @@ const CheckoutPage: React.FC = () => {
               </div>
               <div className="flex justify-between text-primary-700">
                 <span>Delivery Fee</span>
-                <span>{deliveryFee === 0 ? 'Free' : `₦${deliveryFee.toLocaleString()}`}</span>
+                <span>
+                  {deliveryFee === 0
+                    ? "Free"
+                    : `₦${deliveryFee.toLocaleString()}`}
+                </span>
               </div>
               <div className="flex justify-between text-lg font-bold text-primary-950 pt-2 border-t border-primary-200">
                 <span>Total</span>
@@ -144,68 +192,86 @@ const CheckoutPage: React.FC = () => {
         {/* Payment Method */}
         <div className="card mb-6">
           <h3 className="font-medium text-primary-950 mb-4">Payment Method</h3>
-          
+
           <div className="space-y-3">
             <button
-              onClick={() => setPaymentMethod('transfer')}
+              onClick={() => setPaymentMethod("transfer")}
               className={`w-full p-4 rounded-xl border-2 transition-all ${
-                paymentMethod === 'transfer'
-                  ? 'border-primary-950 bg-primary-50'
-                  : 'border-primary-200 hover:border-primary-300'
+                paymentMethod === "transfer"
+                  ? "border-primary-950 bg-primary-50"
+                  : "border-primary-200 hover:border-primary-300"
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  paymentMethod === 'transfer' ? 'border-primary-950' : 'border-primary-300'
-                }`}>
-                  {paymentMethod === 'transfer' && (
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    paymentMethod === "transfer"
+                      ? "border-primary-950"
+                      : "border-primary-300"
+                  }`}
+                >
+                  {paymentMethod === "transfer" && (
                     <div className="w-2.5 h-2.5 bg-primary-950 rounded-full" />
                   )}
                 </div>
                 <CreditCard className="w-6 h-6 text-primary-600" />
                 <div className="text-left">
                   <p className="font-medium text-primary-950">Bank Transfer</p>
-                  <p className="text-sm text-primary-600">Pay via bank transfer</p>
+                  <p className="text-sm text-primary-600">
+                    Pay via bank transfer
+                  </p>
                 </div>
               </div>
             </button>
 
             <button
-              onClick={() => setPaymentMethod('cash')}
+              onClick={() => setPaymentMethod("cash")}
               className={`w-full p-4 rounded-xl border-2 transition-all ${
-                paymentMethod === 'cash'
-                  ? 'border-primary-950 bg-primary-50'
-                  : 'border-primary-200 hover:border-primary-300'
+                paymentMethod === "cash"
+                  ? "border-primary-950 bg-primary-50"
+                  : "border-primary-200 hover:border-primary-300"
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                  paymentMethod === 'cash' ? 'border-primary-950' : 'border-primary-300'
-                }`}>
-                  {paymentMethod === 'cash' && (
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    paymentMethod === "cash"
+                      ? "border-primary-950"
+                      : "border-primary-300"
+                  }`}
+                >
+                  {paymentMethod === "cash" && (
                     <div className="w-2.5 h-2.5 bg-primary-950 rounded-full" />
                   )}
                 </div>
                 <Banknote className="w-6 h-6 text-primary-600" />
                 <div className="text-left">
-                  <p className="font-medium text-primary-950">Pay on Delivery</p>
-                  <p className="text-sm text-primary-600">Pay with cash when delivered</p>
+                  <p className="font-medium text-primary-950">
+                    Pay on Delivery
+                  </p>
+                  <p className="text-sm text-primary-600">
+                    Pay with cash when delivered
+                  </p>
                 </div>
               </div>
             </button>
           </div>
 
           {/* Virtual Account Details */}
-          {paymentMethod === 'transfer' && (
+          {paymentMethod === "transfer" && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               className="mt-4 p-4 bg-accent-50 border border-accent-200 rounded-xl"
             >
-              <h4 className="font-medium text-accent-800 mb-3">Transfer Details</h4>
+              <h4 className="font-medium text-accent-800 mb-3">
+                Transfer Details
+              </h4>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-accent-700">Account Number:</span>
+                  <span className="text-sm text-accent-700">
+                    Account Number:
+                  </span>
                   <div className="flex items-center gap-2">
                     <span className="font-mono font-medium text-accent-900">
                       {virtualAccount.accountNumber}
@@ -214,41 +280,121 @@ const CheckoutPage: React.FC = () => {
                       onClick={handleCopyAccount}
                       className="p-1 text-accent-600 hover:text-accent-800 transition-colors"
                     >
-                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      {copied ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-accent-700">Bank:</span>
-                  <span className="font-medium text-accent-900">{virtualAccount.bankName}</span>
+                  <span className="font-medium text-accent-900">
+                    {virtualAccount.bankName}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-accent-700">Account Name:</span>
-                  <span className="font-medium text-accent-900">{virtualAccount.accountName}</span>
+                  <span className="font-medium text-accent-900">
+                    {virtualAccount.accountName}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-accent-700">Amount:</span>
-                  <span className="font-bold text-accent-900">₦{finalTotal.toLocaleString()}</span>
+                  <span className="font-bold text-accent-900">
+                    ₦{finalTotal.toLocaleString()}
+                  </span>
                 </div>
               </div>
               <p className="text-xs text-accent-600 mt-3">
-                Transfer the exact amount to complete your order. Your order will be confirmed automatically.
+                Transfer the exact amount to complete your order. Your order
+                will be confirmed automatically.
               </p>
             </motion.div>
           )}
         </div>
       </div>
 
-      {/* Place Order Button - Fixed Bottom */}
+      {/* Place Order + Verify Payment - Fixed Bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-primary-200 px-6 py-4">
-        <button
-          onClick={handlePlaceOrder}
-          disabled={isProcessing}
-          className="btn-primary w-full"
-        >
-          {isProcessing ? 'Processing Order...' : `Place Order • ₦${finalTotal.toLocaleString()}`}
-        </button>
+        <div className="max-w-3xl mx-auto flex gap-3">
+          <button
+            onClick={handleVerifyPayment}
+            disabled={verifying}
+            className="flex-1 btn-secondary"
+          >
+            {verifying ? (
+              <span className="inline-flex items-center gap-2">
+                <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                Verifying...
+              </span>
+            ) : (
+              "I have made payment / Verify Payment"
+            )}
+          </button>
+
+          <button
+            onClick={handlePlaceOrder}
+            disabled={isProcessing}
+            className="flex-1 btn-primary"
+          >
+            {isProcessing
+              ? "Processing Order..."
+              : `Place Order • ₦${finalTotal.toLocaleString()}`}
+          </button>
+        </div>
       </div>
+
+      {/* Lottie overlay (uses lottie-player web component via unpkg) */}
+      {showLottie && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 text-center">
+            <lottie-player
+              src="/Lottie-Animation.json"
+              background="transparent"
+              speed="1"
+              style={{ width: "240px", height: "240px", margin: "0 auto" }}
+              autoplay
+            />
+
+            <h3 className="mt-4 text-xl font-semibold text-primary-950">
+              Payment Verified
+            </h3>
+            <p className="text-primary-600 mt-2">
+              We received your payment. Your order will be confirmed shortly.
+            </p>
+
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => {
+                  setShowLottie(false);
+                  // after showing confirmation, proceed to order placement flow
+                  handlePlaceOrder();
+                }}
+                className="btn-primary"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
