@@ -27,7 +27,9 @@ const Layout: React.FC = () => {
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-primary-200 px-4 py-2 z-40">
         <div className="flex justify-around items-center max-w-md mx-auto">
-          {navItems.map(({ path, icon: Icon, label, badge }) => (
+          {navItems.map(({ path, icon: Icon, label, badge }) => {
+            const count = badge ?? 0;
+            return (
             <Link
               key={path}
               to={path}
@@ -39,13 +41,13 @@ const Layout: React.FC = () => {
                     isActive(path) ? 'text-primary-950' : 'text-primary-400'
                   }`} 
                 />
-                {badge && badge > 0 && (
+                {count > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className="absolute -top-2 -right-2 bg-accent-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
                   >
-                    {badge > 99 ? '99+' : badge}
+                    {count > 99 ? '99+' : count}
                   </motion.span>
                 )}
               </div>
@@ -63,7 +65,8 @@ const Layout: React.FC = () => {
                 />
               )}
             </Link>
-          ))}
+            );
+          })}
         </div>
       </nav>
     </div>
