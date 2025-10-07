@@ -24,3 +24,4 @@ storybook-static
 /.netlify
 README.md
 /docs
+.exe

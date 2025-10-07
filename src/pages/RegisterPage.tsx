@@ -137,7 +137,7 @@ const RegisterPage: React.FC = () => {
   const selectedWard = wardsData.wards.find((w) => w.name === formData.ward);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white mb-16">
       {/* Header */}
       <div className="sticky top-0 bg-white border-b border-primary-100 px-6 py-4 z-10">
         <div className="flex items-center justify-between">

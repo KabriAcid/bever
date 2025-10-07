@@ -290,30 +290,36 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <div className="text-center p-3 bg-primary-50 rounded-xl">
-            <div className="text-2xl font-bold text-primary-950">127</div>
-            <div className="text-xs text-primary-600">Orders</div>
+            <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-950">
+              127
+            </div>
+            <div className="text-sm sm:text-xs text-primary-600">Orders</div>
           </div>
+
           <div
             className="text-center p-3 bg-accent-50 rounded-xl cursor-pointer hover:bg-accent-100 transition-colors"
             onClick={handleCopyCode}
           >
-            <div className="text-2xl font-bold text-accent-700">
+            <div className="text-lg sm:text-2xl md:text-3xl font-bold text-accent-700 truncate">
               {user?.beverCode}
             </div>
-            <div className="text-xs text-accent-600 flex items-center justify-center gap-1">
+            <div className="text-sm sm:text-xs text-accent-600 flex items-center justify-center gap-1">
               {copied ? (
-                <Check className="w-3 h-3" />
+                <Check className="w-3 h-3 sm:w-4 sm:h-4" />
               ) : (
-                <Copy className="w-3 h-3" />
+                <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
               )}
-              Bever Code
+              <span className="truncate">Bever Code</span>
             </div>
           </div>
+
           <div className="text-center p-3 bg-primary-50 rounded-xl">
-            <div className="text-2xl font-bold text-primary-950">4.8</div>
-            <div className="text-xs text-primary-600">Rating</div>
+            <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-950">
+              4.8
+            </div>
+            <div className="text-sm sm:text-xs text-primary-600">Rating</div>
           </div>
         </div>
 

@@ -1,54 +1,54 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Phone, Lock, Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Phone, Lock, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    phoneNumber: '',
-    pin: ''
+    phoneNumber: "",
+    pin: "",
   });
   const [showPin, setShowPin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Mock user data - in real app, this would come from API
       const mockUser = {
-        id: '1',
-        businessName: 'Demo Business',
-        businessAddress: '123 Demo Street, Jalingo',
-        ward: 'Abbare Yelwa',
-        subArea: 'Abbare',
-        customerCategory: 'Office' as const,
+        id: "1",
+        businessName: "Masakai",
+        businessAddress: "123 Demo Street, Jalingo",
+        ward: "Abbare Yelwa",
+        subArea: "Abbare",
+        customerCategory: "Office" as const,
         phoneNumber: formData.phoneNumber,
-        beverCode: 'JAL-01-OF-0001',
-        verificationStatus: 'Verified' as const,
+        beverCode: "JAL-01-OF-0001",
+        verificationStatus: "Verified" as const,
         createdAt: new Date(),
-        hasPin: true
+        hasPin: true,
       };
 
       login(mockUser);
-      navigate('/home');
+      navigate("/home");
     } catch (err) {
-      setError('Invalid phone number or PIN');
+      setError("Invalid phone number or PIN");
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +63,14 @@ const LoginPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <h1 className="text-4xl font-bold text-primary-950 mb-2">Bever</h1>
+          <div className="inline-flex items-center justify-center gap-3 mb-2">
+            <img
+              src="/favicon.png"
+              alt="Bever logo"
+              className="w-10 h-10 rounded-sm"
+            />
+            <h1 className="text-4xl font-bold text-primary-950">Bever</h1>
+          </div>
           <p className="text-primary-600">Premium beverages delivered</p>
         </motion.div>
       </div>
@@ -77,7 +84,9 @@ const LoginPage: React.FC = () => {
           className="max-w-md mx-auto"
         >
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-primary-950 mb-2">Welcome back</h2>
+            <h2 className="text-2xl font-bold text-primary-950 mb-2">
+              Welcome back
+            </h2>
             <p className="text-primary-600">Sign in to your account</p>
           </div>
 
@@ -107,7 +116,7 @@ const LoginPage: React.FC = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-primary-400" />
                 <input
-                  type={showPin ? 'text' : 'password'}
+                  type={showPin ? "text" : "password"}
                   name="pin"
                   value={formData.pin}
                   onChange={handleInputChange}
@@ -121,7 +130,11 @@ const LoginPage: React.FC = () => {
                   onClick={() => setShowPin(!showPin)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-400 hover:text-primary-600"
                 >
-                  {showPin ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPin ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -141,14 +154,17 @@ const LoginPage: React.FC = () => {
               disabled={isLoading}
               className="btn-primary w-full"
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-primary-600">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-primary-950 font-medium hover:underline">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-primary-950 font-medium hover:underline"
+              >
                 Register here
               </Link>
             </p>
