@@ -5,21 +5,21 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import { PinProvider } from "./contexts/PinContext";
-import { CartProvider } from "./contexts/CartContext";
-import ProtectedRoute from "./components/ProtectedRoute";
-import TransactionPinModal from "./components/TransactionPinModal";
-import Layout from "./components/Layout";
-import LoginPage from "./client/LoginPage";
-import RegisterPage from "./client/RegisterPage";
-import HomePage from "./client/HomePage";
-import CartPage from "./client/CartPage";
-import CheckoutPage from "./client/CheckoutPage";
-import OrdersPage from "./client/OrdersPage";
-import ProfilePage from "./client/ProfilePage";
-import { useAuth } from "./contexts/AuthContext";
-import { usePin } from "./contexts/PinContext";
+import { AuthProvider } from "./client/contexts/AuthContext";
+import { PinProvider } from "./client/contexts/PinContext";
+import { CartProvider } from "./client/contexts/CartContext";
+import ProtectedRoute from "./client/components/ProtectedRoute";
+import TransactionPinModal from "./client/components/TransactionPinModal";
+import Layout from "./client/components/Layout";
+import LoginPage from "./client/pages/LoginPage";
+import RegisterPage from "./client/pages/RegisterPage";
+import HomePage from "./client/pages/HomePage";
+import CartPage from "./client/pages/CartPage";
+import CheckoutPage from "./client/pages/CheckoutPage";
+import OrdersPage from "./client/pages/OrdersPage";
+import ProfilePage from "./client/pages/ProfilePage";
+import { useAuth } from "./client/contexts/AuthContext";
+import { usePin } from "./client/contexts/PinContext";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();

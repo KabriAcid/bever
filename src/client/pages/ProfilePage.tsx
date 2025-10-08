@@ -21,11 +21,11 @@ import {
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { usePin } from "../contexts/PinContext";
-import EditProfileModal from "../components/modals/EditProfileModal";
-import PhotoUploadModal from "../components/modals/PhotoUploadModal";
-import SettingsModal from "../components/modals/SettingsModal";
-import LogoutConfirmModal from "../components/modals/LogoutConfirmModal";
-import BaseModal from "../components/modals/BaseModal";
+import EditProfileModal from "../modals/EditProfileModal";
+import PhotoUploadModal from "../modals/PhotoUploadModal";
+import SettingsModal from "../modals/SettingsModal";
+import LogoutConfirmModal from "../modals/LogoutConfirmModal";
+import BaseModal from "../modals/BaseModal";
 import ProfileCompletionComponent from "../components/ProfileCompletion";
 import type { ProfileSettings, ProfileCompletion } from "../types";
 
