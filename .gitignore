@@ -23,5 +23,5 @@ storybook-static
 /.vercel
 /.netlify
 README.md
-/docs
+/docs   
 .exe

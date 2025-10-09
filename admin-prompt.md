@@ -8,8 +8,8 @@ Build a robust, scalable Admin Dashboard for Bever that fully controls and monit
 
 ## Design System & Visual Parity
 
-- **Primary Color:** Black (`#000000` / `primary-950`), and gray as secondary.
-- **Typography:** System font stack (`Raleway CDN`, `Segoe UI`, etc.).
+- **Primary Color:** Black (`#000000` / `primary-950`) e.g buttons, active states, and gray as secondary.
+- **Typography:** System font stack (`-apple-syste`, `Segoe UI`, etc.). Plus Jakarta Sans CDN for all digits used especially amounts. Use a .digit class cause I already have it in the index.css
 - **Utility Classes:** Use existing Tailwind CSS custom classes (`btn-primary`, `card`, `input-field`, etc.).
 - **Responsiveness:** Mobile-first, with responsive utilities for text, spacing, grid, table responsiveness with no scrollbars but scrollable, and icons.
 - **Component Patterns:** Modular, feature-based, and scalable. UI primitives in `ui/`, shared logic in `shared/`.
@@ -99,6 +99,12 @@ src/
 - Skeletons should match the design system (colors, border radius, spacing) and provide a smooth loading experience.
 - Ensure loading states are handled gracefully, with transitions from skeleton to actual data.
 
+## Animations & Transitions
+
+- Use Framer Motion for smooth transitions and animations throughout the admin dashboard (page transitions, modal open/close, skeleton fade-in, etc.).
+- Buttons should display a simple spinning icon (loader) when clicked and performing async actions, for clear feedback and improved UX.
+- All animations should be subtle, fast, and consistent with the design system.
+
 ## Additional Requirements
 
 - **Protected Routes:** All admin pages must be protected by authentication.
@@ -106,6 +112,7 @@ src/
 - **Shared Components:** Use and extend shared UI primitives and modals.
 - **Scalability:** Structure must support future features (role-based access, advanced analytics, etc.).
 - **Mock Data:** Use mock data for development, with clear separation for future backend integration.
+- **No Boilerplates:** Do not generate boilerplate code or files. Only create the admin directory and additional files/components when necessary for the required features.
 
 ## References
 
