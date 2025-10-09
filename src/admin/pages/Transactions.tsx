@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Table, TableRow, TableCell } from '../ui/Table';
-import { Badge } from '../ui/Badge';
-import { Select } from '../ui/Select';
-import { mockTransactions } from '../data/mockData';
-import { Transaction, OrderStatus } from '../types';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { Table, TableRow, TableCell } from "../ui/Table";
+import { Badge } from "../ui/Badge";
+import { Select } from "../ui/Select";
+import { mockTransactions } from "../data/mockData";
+import { Transaction, OrderStatus } from "../types";
+import { motion } from "framer-motion";
 
 export function Transactions() {
   const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,13 +18,19 @@ export function Transactions() {
     }, 800);
   }, []);
 
-  const filteredTransactions = statusFilter === 'all'
-    ? transactions
-    : transactions.filter((t) => t.status === statusFilter);
+  const filteredTransactions =
+    statusFilter === "all"
+      ? transactions
+      : transactions.filter((t) => t.status === statusFilter);
 
-  const handleStatusChange = (transactionId: string, newStatus: OrderStatus) => {
+  const handleStatusChange = (
+    transactionId: string,
+    newStatus: OrderStatus
+  ) => {
     setTransactions((prev) =>
-      prev.map((t) => (t.id === transactionId ? { ...t, status: newStatus } : t))
+      prev.map((t) =>
+        t.id === transactionId ? { ...t, status: newStatus } : t
+      )
     );
   };
 
@@ -33,7 +39,7 @@ export function Transactions() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex flex-col gap-3 mb-6 lg:flex-row lg:items-center lg:justify-between"
       >
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Transactions</h2>
@@ -43,14 +49,14 @@ export function Transactions() {
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
           options={[
-            { value: 'all', label: 'All Status' },
-            { value: 'pending', label: 'Pending' },
-            { value: 'confirmed', label: 'Confirmed' },
-            { value: 'processing', label: 'Processing' },
-            { value: 'delivered', label: 'Delivered' },
-            { value: 'cancelled', label: 'Cancelled' },
+            { value: "all", label: "All Status" },
+            { value: "pending", label: "Pending" },
+            { value: "confirmed", label: "Confirmed" },
+            { value: "processing", label: "Processing" },
+            { value: "delivered", label: "Delivered" },
+            { value: "cancelled", label: "Cancelled" },
           ]}
-          className="w-48"
+          className="w-full lg:w-48 pr-8 relative"
         />
       </motion.div>
 
@@ -60,7 +66,17 @@ export function Transactions() {
         transition={{ delay: 0.1 }}
       >
         <Table
-          headers={['Transaction ID', 'Customer', 'Date', 'Items', 'Amount', 'Delivery', 'Payment', 'Status', 'Actions']}
+          headers={[
+            "Transaction ID",
+            "Customer",
+            "Date",
+            "Items",
+            "Amount",
+            "Delivery",
+            "Payment",
+            "Status",
+            "Actions",
+          ]}
           loading={loading}
         >
           {filteredTransactions.map((transaction) => (
@@ -73,7 +89,9 @@ export function Transactions() {
                 <div>
                   <p className="text-sm">{transaction.orderDate}</p>
                   {transaction.deliveryDate && (
-                    <p className="text-xs text-gray-500">Delivery: {transaction.deliveryDate}</p>
+                    <p className="text-xs text-gray-500">
+                      Delivery: {transaction.deliveryDate}
+                    </p>
                   )}
                 </div>
               </TableCell>
@@ -81,7 +99,9 @@ export function Transactions() {
                 <span className="digit">{transaction.items}</span>
               </TableCell>
               <TableCell>
-                <span className="font-semibold digit">₦{transaction.amount.toLocaleString()}</span>
+                <span className="font-semibold digit">
+                  ₦{transaction.amount.toLocaleString()}
+                </span>
               </TableCell>
               <TableCell>
                 <Badge variant="info">{transaction.deliveryCategory}</Badge>
@@ -89,11 +109,11 @@ export function Transactions() {
               <TableCell>
                 <Badge
                   variant={
-                    transaction.paymentStatus === 'completed'
-                      ? 'success'
-                      : transaction.paymentStatus === 'failed'
-                      ? 'error'
-                      : 'warning'
+                    transaction.paymentStatus === "completed"
+                      ? "success"
+                      : transaction.paymentStatus === "failed"
+                      ? "error"
+                      : "warning"
                   }
                 >
                   {transaction.paymentStatus}
@@ -102,13 +122,18 @@ export function Transactions() {
               <TableCell>
                 <Select
                   value={transaction.status}
-                  onChange={(e) => handleStatusChange(transaction.id, e.target.value as OrderStatus)}
+                  onChange={(e) =>
+                    handleStatusChange(
+                      transaction.id,
+                      e.target.value as OrderStatus
+                    )
+                  }
                   options={[
-                    { value: 'pending', label: 'Pending' },
-                    { value: 'confirmed', label: 'Confirmed' },
-                    { value: 'processing', label: 'Processing' },
-                    { value: 'delivered', label: 'Delivered' },
-                    { value: 'cancelled', label: 'Cancelled' },
+                    { value: "pending", label: "Pending" },
+                    { value: "confirmed", label: "Confirmed" },
+                    { value: "processing", label: "Processing" },
+                    { value: "delivered", label: "Delivered" },
+                    { value: "cancelled", label: "Cancelled" },
                   ]}
                   className="w-32"
                 />

@@ -58,26 +58,28 @@ export function Users() {
       >
         <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="w-full flex flex-col gap-3 lg:w-auto lg:flex-row lg:items-center lg:gap-3 order-1 lg:order-none">
-            <Select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              options={[
-                { value: "all", label: "All Status" },
-                { value: "active", label: "Active" },
-                { value: "inactive", label: "Inactive" },
-                { value: "suspended", label: "Suspended" },
-                { value: "pending", label: "Pending" },
-              ]}
-              className="w-full lg:w-40"
-            />
-            <Button
-              variant="secondary"
-              onClick={exportToCSV}
-              className="w-full lg:w-auto"
-            >
-              <Download className="w-4 h-4" />
-              Export
-            </Button>
+            <div className="flex flex-row gap-3 w-full">
+              <Select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                options={[
+                  { value: "all", label: "All Status" },
+                  { value: "active", label: "Active" },
+                  { value: "inactive", label: "Inactive" },
+                  { value: "suspended", label: "Suspended" },
+                  { value: "pending", label: "Pending" },
+                ]}
+                className="w-1/2 lg:w-40 pr-8 relative"
+              />
+              <Button
+                variant="secondary"
+                onClick={exportToCSV}
+                className="w-1/2 lg:w-auto"
+              >
+                <Download className="w-4 h-4" />
+                Export
+              </Button>
+            </div>
           </div>
           <div className="w-full max-w-md relative lg:flex-1 order-2 lg:order-none">
             <Input
