@@ -6,7 +6,7 @@ import { Select } from "../ui/Select";
 import { Button } from "../ui/Button";
 import { Eye, Edit, Lock, Unlock, Search, Download } from "lucide-react";
 import { mockUsers } from "../data/mockData";
-import { User, UserStatus, AccountStatus } from "../types";
+import { User } from "../types";
 import { UserDetailsModal } from "../modals/UserDetailsModal";
 import { motion } from "framer-motion";
 

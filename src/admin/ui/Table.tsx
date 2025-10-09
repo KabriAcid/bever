@@ -39,6 +39,10 @@ export function Table({ headers, children, loading, emptyMessage = 'No data avai
     );
   }
 
+  const hasChildren = Array.isArray(children)
+    ? children.length > 0
+    : !!children;
+
   return (
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
@@ -53,7 +57,15 @@ export function Table({ headers, children, loading, emptyMessage = 'No data avai
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {children}
+            {hasChildren ? (
+              children
+            ) : (
+              <tr>
+                <td colSpan={headers.length} className="px-6 py-4 text-center text-gray-500">
+                  {emptyMessage}
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

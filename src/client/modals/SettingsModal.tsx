@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Bell, Globe, Shield, Truck } from "lucide-react";
 import BaseModal from "./BaseModal";
-import type { ProfileSettings } from "../../types";
+import type { ProfileSettings } from "../types";
 
 interface SettingsModalProps {
   isOpen: boolean;
