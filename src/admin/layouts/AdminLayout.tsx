@@ -15,7 +15,6 @@ import {
   X,
   LogOut,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -41,37 +40,25 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="lg:flex">
-        <AnimatePresence>
-          {/* Overlay only for mobile sidebar */}
-          {isSidebarOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-          )}
-        </AnimatePresence>
+        {/* Overlay only for mobile sidebar */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black backdrop-blur-sm bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
 
-        {/* Sidebar: always visible on desktop, toggled on mobile */}
-        <motion.aside
-          initial={false}
-          animate={{
-            x: isSidebarOpen ? 0 : -320,
-          }}
-          className="fixed top-0 left-0 z-50 h-screen w-80 bg-white border-r border-gray-200 transition-transform duration-300 lg:sticky lg:translate-x-0 lg:block"
-          style={{
-            // Always show sidebar on desktop (lg:), hide on mobile unless open
-            transform: isSidebarOpen ? "translateX(0)" : undefined,
-            display: isSidebarOpen ? "block" : undefined,
-          }}
+        {/* Sidebar: always visible on desktop, toggled on mobile with smoother animation */}
+        <aside
+          className={`fixed top-0 left-0 z-50 h-screen w-80 bg-white border-r border-gray-200 lg:sticky lg:block transition-transform duration-500 ease-in-out ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-80"
+          } lg:translate-x-0`}
         >
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">B</span>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                  <img src="/favicon.png" alt="" />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-gray-900">Bever</h1>
@@ -117,7 +104,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </button>
             </div>
           </div>
-        </motion.aside>
+        </aside>
 
         <div className="flex-1 min-w-0">
           <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
