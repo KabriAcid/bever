@@ -79,12 +79,12 @@ export function Users() {
               Export
             </Button>
           </div>
-          <div className="w-auto lg:w-full max-w-md relative lg:flex-1 order-2 lg:order-none">
+          <div className="w-full max-w-md relative lg:flex-1 order-2 lg:order-none">
             <Input
               placeholder="Search users by name, business, or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-auto lg:w-full"
+              className="pl-10 w-full"
             />
             <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none sm:left-3 sm:w-5 sm:h-5" />
           </div>
