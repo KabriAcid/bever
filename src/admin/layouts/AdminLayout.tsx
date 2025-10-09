@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -15,6 +15,7 @@ import {
   X,
   LogOut,
 } from "lucide-react";
+import { useAdminAuth } from "../contexts/AdminAuthContext";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -35,7 +36,26 @@ const navItems = [
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAdminAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleLogout = () => {
+    try {
+      // store the current route (path + query + hash) so we can return after re-login if needed
+      const currentRoute =
+        window.location.pathname +
+        window.location.search +
+        window.location.hash;
+      localStorage.setItem("admin:lastRoute", currentRoute);
+    } catch (e) {
+      // ignore storage errors
+    }
+
+    // perform logout and redirect to admin login
+    logout();
+    navigate("/admin/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -98,7 +118,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </nav>
 
             <div className="p-4 border-t border-gray-200">
-              <button className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
                 <LogOut className="w-5 h-5" />
                 <span className="font-medium">Logout</span>
               </button>
