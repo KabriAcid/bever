@@ -56,18 +56,8 @@ export function Users() {
         animate={{ opacity: 1, y: 0 }}
         className="card"
       >
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-          <div className="flex-1 max-w-md relative">
-            <Input
-              placeholder="Search users by name, business, or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none sm:left-3 sm:w-5 sm:h-5" />
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col gap-4 mb-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="w-full flex flex-col gap-3 lg:w-auto lg:flex-row lg:items-center lg:gap-3 order-1 lg:order-none">
             <Select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -78,12 +68,25 @@ export function Users() {
                 { value: "suspended", label: "Suspended" },
                 { value: "pending", label: "Pending" },
               ]}
-              className="w-40"
+              className="w-full lg:w-40"
             />
-            <Button variant="secondary" onClick={exportToCSV}>
+            <Button
+              variant="secondary"
+              onClick={exportToCSV}
+              className="w-full lg:w-auto"
+            >
               <Download className="w-4 h-4" />
               Export
             </Button>
+          </div>
+          <div className="w-auto lg:w-full max-w-md relative lg:flex-1 order-2 lg:order-none">
+            <Input
+              placeholder="Search users by name, business, or email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 w-auto lg:w-full"
+            />
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none sm:left-3 sm:w-5 sm:h-5" />
           </div>
         </div>
 
