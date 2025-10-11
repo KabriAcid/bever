@@ -54,17 +54,6 @@ export function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Back Button */}
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          onClick={() => window.history.back()}
-          className="flex items-center space-x-2 text-primary-600 hover:text-primary-800 transition-colors mb-8"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back</span>
-        </motion.button>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -73,9 +62,9 @@ export function Login() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-primary-950 mb-2">
-              Admin Sign In
+              Sign In
             </h1>
-            <p className="text-primary-600">Welcome back, admin!</p>
+            <p className="text-primary-600">Welcome back, Admin!</p>
           </div>
 
           {/* Form */}

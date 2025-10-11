@@ -16,6 +16,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAdminAuth } from "../contexts/AdminAuthContext";
+import { LogoutConfirmModal } from "../modals/LogoutConfirmModal";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -39,6 +40,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const navigate = useNavigate();
   const { logout } = useAdminAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleLogout = () => {
     try {
@@ -119,7 +121,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             <div className="p-4 border-t border-gray-200">
               <button
-                onClick={handleLogout}
+                onClick={() => setIsConfirmOpen(true)}
                 className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               >
                 <LogOut className="w-5 h-5" />
@@ -128,6 +130,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </div>
           </div>
         </aside>
+
+        <LogoutConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={() => {
+            setIsConfirmOpen(false);
+            handleLogout();
+          }}
+        />
 
         <div className="flex-1 min-w-0">
           <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
