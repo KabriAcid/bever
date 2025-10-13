@@ -88,7 +88,7 @@ export function Login() {
               />
             </div>
 
-            <div>
+            <div className="relative">
               <Input
                 label="Password"
                 type={showPassword ? "text" : "password"}
@@ -102,21 +102,23 @@ export function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-4 top-9 transform -translate-y-1/2 text-primary-400"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-400 p-2"
                 tabIndex={-1}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
                 ) : (
                   <Eye className="w-5 h-5" />
                 )}
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 text-primary-400 p-2"
+                style={{ transform: 'translateY(calc(-50% + 4px))' }}
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
                   name="rememberMe"
                   checked={formData.rememberMe}
                   onChange={handleInputChange}
@@ -136,38 +138,10 @@ export function Login() {
               Sign In
             </Button>
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-primary-200" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-primary-500">Or with</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                type="button"
-                variant="secondary"
-                className="flex items-center justify-center gap-2"
-              >
-                <Facebook className="w-4 h-4 text-blue-600" />
-                <span>Facebook</span>
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                className="flex items-center justify-center gap-2"
-              >
-                <Chrome className="w-4 h-4 text-red-500" />
-                <span>Google</span>
-              </Button>
-            </div>
-
             <div className="text-center">
               <span className="text-primary-600">Don't have an account? </span>
               <a
-                href="/register"
+                href="/"
                 className="text-primary-800 hover:text-primary-950 font-medium"
               >
                 Sign Up

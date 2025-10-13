@@ -39,7 +39,7 @@ const navItems = [
 export function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAdminAuth();
+  const { logout, isAuthenticated } = useAdminAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
@@ -57,8 +57,17 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
     // perform logout and redirect to admin login
     logout();
-    navigate("/admin/login");
+    navigate("/admin/login", { replace: true });
   };
+
+  // If authentication state flips to false elsewhere, ensure we redirect to login
+  if (!isAuthenticated) {
+    try {
+      navigate("/admin/login", { replace: true });
+    } catch (e) {
+      // ignore navigation errors during unmount
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
