@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -10,84 +10,41 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
-import { Order } from "../types";
+import { ClientOrder, getClientOrders } from "../api/localOrdersClient";
 
 const OrdersPage: React.FC = () => {
-  const { user } = useAuth();
   const { addItem } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<ClientOrder | null>(null);
+  const [orders, setOrders] = useState<ClientOrder[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock orders data - in real app, this would come from API
-  const mockOrders: Order[] = [
-    {
-      id: "hjxk-c38dm",
-      userId: user?.id || "1",
-      items: [
-        { productId: "eva-water-75cl-pack", quantity: 2, price: 2400 },
-        { productId: "coca-cola-33cl-pack", quantity: 1, price: 7200 },
-      ],
-      total: 12000,
-      status: "Delivered",
-      paymentMethod: "Transfer",
-      deliveryAddress: user?.businessAddress || "Demo Address",
-      createdAt: new Date("2024-01-15T21:00:00"),
-      deliveredAt: new Date("2024-01-16T14:30:00"),
-    },
-    {
-      id: "sdjs-83jm",
-      userId: user?.id || "1",
-      items: [
-        { productId: "pepsi-33cl-pack", quantity: 3, price: 7000 },
-        { productId: "chivita-1l-pack", quantity: 1, price: 4800 },
-      ],
-      total: 25800,
-      status: "Processing",
-      paymentMethod: "Pay on Delivery",
-      deliveryAddress: user?.businessAddress || "Demo Address",
-      createdAt: new Date("2024-01-14T18:45:00"),
-    },
-    {
-      id: "hjleai8-23u8",
-      userId: user?.id || "1",
-      items: [
-        { productId: "fanta-35cl-pack", quantity: 2, price: 3000 },
-        { productId: "eva-water-1.5l-pack", quantity: 1, price: 3600 },
-      ],
-      total: 10100,
-      status: "Cancelled",
-      paymentMethod: "Transfer",
-      deliveryAddress: user?.businessAddress || "Demo Address",
-      createdAt: new Date("2024-01-13T16:20:00"),
-    },
-    {
-      id: "kl9p-x7nm",
-      userId: user?.id || "1",
-      items: [
-        { productId: "monster-50cl-pack", quantity: 1, price: 14400 },
-        { productId: "sprite-35cl-pack", quantity: 2, price: 3000 },
-      ],
-      total: 20900,
-      status: "Confirmed",
-      paymentMethod: "Transfer",
-      deliveryAddress: user?.businessAddress || "Demo Address",
-      createdAt: new Date("2024-01-12T12:15:00"),
-    },
-  ];
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      setLoading(true);
+      const list = await getClientOrders();
+      if (!mounted) return;
+      setOrders(list);
+      setLoading(false);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-  const filteredOrders = mockOrders.filter((order) =>
+  const filteredOrders = orders.filter((order) =>
     order.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getStatusColor = (status: Order["status"]) => {
+  const getStatusColor = (status: ClientOrder["status"]) => {
     switch (status) {
       case "Delivered":
         return "bg-primary-200 text-accent";
       case "Processing":
         return "bg-blue-100 text-blue-700";
-      case "Confirmed":
+      case "Placed":
         return "bg-orange-100 text-orange-700";
       case "Cancelled":
         return "bg-red-100 text-red-700";
@@ -96,13 +53,13 @@ const OrdersPage: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status: Order["status"]) => {
+  const getStatusIcon = (status: ClientOrder["status"]) => {
     switch (status) {
       case "Delivered":
         return <CheckCircle className="w-3 h-3" />;
       case "Processing":
         return <Clock className="w-3 h-3" />;
-      case "Confirmed":
+      case "Placed":
         return <Package className="w-3 h-3" />;
       case "Cancelled":
         return <XCircle className="w-3 h-3" />;
@@ -111,7 +68,7 @@ const OrdersPage: React.FC = () => {
     }
   };
 
-  const handleReorder = (order: Order) => {
+  const handleReorder = (order: ClientOrder) => {
     // Add all items from the order to cart
     order.items.forEach((item) => {
       addItem(item.productId, item.quantity);
@@ -121,7 +78,8 @@ const OrdersPage: React.FC = () => {
     alert("Items added to cart successfully!");
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (iso: string) => {
+    const date = new Date(iso);
     return (
       date.toLocaleDateString("en-GB", {
         day: "2-digit",
@@ -177,18 +135,18 @@ const OrdersPage: React.FC = () => {
 
       {/* Orders List */}
       <div className="px-6 py-6 pb-32">
-        {filteredOrders.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-12">Loading...</div>
+        ) : filteredOrders.length === 0 ? (
           <div className="text-center py-12">
             <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Package className="w-10 h-10 text-primary-400" />
             </div>
-            <h3 className="text-lg font-medium text-primary-950 mb-2">
+            <h3 className="text-lg font-medium text-primary-950">
               No orders found
             </h3>
             <p className="text-primary-600">
-              {searchQuery
-                ? "Try adjusting your search"
-                : "You haven't placed any orders yet"}
+              You haven't placed any orders yet
             </p>
           </div>
         ) : (

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
+import { saveClientOrder } from "../api/localOrdersClient";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,6 +50,28 @@ const CheckoutPage: React.FC = () => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Save order to localStorage (client-side orders)
+      try {
+        const orderPayload = {
+          userId: user?.id || "guest",
+          items: cartItems.map(({ productId, quantity, product }) => ({
+            productId,
+            quantity,
+            price: product.price,
+          })),
+          total: finalTotal,
+          status: "Placed" as const,
+          paymentMethod:
+            paymentMethod === "transfer" ? "Transfer" : "Pay on Delivery",
+          deliveryAddress: user?.businessAddress || "",
+          deliveredAt: null,
+        };
+
+        await saveClientOrder(orderPayload);
+      } catch (e) {
+        console.error("Failed to persist client order", e);
+      }
 
       // Clear cart and show success
       clearCart();
