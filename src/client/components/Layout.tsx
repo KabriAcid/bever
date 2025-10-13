@@ -45,7 +45,7 @@ const Layout: React.FC = () => {
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute -top-2 -right-2 bg-primary-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+                      className="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
                     >
                       {count > 99 ? "99+" : count}
                     </motion.span>
