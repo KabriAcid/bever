@@ -3,6 +3,7 @@ import { Table, TableRow, TableCell } from "../ui/Table";
 import { Select } from "../ui/Select";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
+import { Eye, RefreshCw } from "lucide-react";
 import { getOrders, seedIfEmpty, updateOrderStatus } from "../api/localOrders";
 import { motion } from "framer-motion";
 import { Order } from "../api/localOrders";
@@ -23,8 +24,20 @@ export function Orders() {
       setOrders(data.sort((a, b) => (a.orderDate < b.orderDate ? 1 : -1)));
       setLoading(false);
     })();
+    // poll every 6s for new orders (simple polling for MVP)
+    const id = setInterval(async () => {
+      const data = await getOrders();
+      if (!mounted) return;
+      setOrders((prev) => {
+        // quick shallow compare by length and latest id
+        if (!data || data.length === prev.length) return prev;
+        return data.sort((a, b) => (a.orderDate < b.orderDate ? 1 : -1));
+      });
+    }, 6000);
+
     return () => {
       mounted = false;
+      clearInterval(id);
     };
   }, []);
 
@@ -67,25 +80,47 @@ export function Orders() {
           </p>
         </div>
 
-        <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
-          <Input
-            placeholder="Search by Order ID or Customer"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <Select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            options={[
-              { value: "all", label: "All Status" },
-              { value: "pending", label: "Pending" },
-              { value: "processing", label: "Processing" },
-              { value: "approved", label: "Approved" },
-              { value: "declined", label: "Declined" },
-              { value: "delivered", label: "Delivered" },
-            ]}
-            className="w-40"
-          />
+        <div className="w-full lg:w-auto flex items-center gap-3">
+          <div className="flex-1">
+            <Input
+              placeholder="Search by order id or customer"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full sm:w-96"
+            />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              options={[
+                { value: "all", label: "All Status" },
+                { value: "pending", label: "Pending" },
+                { value: "processing", label: "Processing" },
+                { value: "approved", label: "Approved" },
+                { value: "declined", label: "Declined" },
+                { value: "delivered", label: "Delivered" },
+              ]}
+              className="w-36 text-sm"
+              containerClassName="select-compact"
+            />
+
+            <button
+              title="Refresh orders"
+              onClick={async () => {
+                setLoading(true);
+                const d = await getOrders();
+                setOrders(
+                  d.sort((a, b) => (a.orderDate < b.orderDate ? 1 : -1))
+                );
+                setLoading(false);
+              }}
+              className="p-2 rounded-lg hover:bg-gray-100"
+            >
+              <RefreshCw className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </motion.div>
 
@@ -132,7 +167,9 @@ export function Orders() {
                 <TableCell>
                   <span className="font-mono text-sm">{o.id}</span>
                 </TableCell>
+
                 <TableCell>{o.userName}</TableCell>
+
                 <TableCell>
                   <div>
                     <p className="text-sm">
@@ -145,24 +182,40 @@ export function Orders() {
                     )}
                   </div>
                 </TableCell>
+
                 <TableCell>
                   <span className="digit">{o.items}</span>
                 </TableCell>
+
                 <TableCell>
                   <span className="font-semibold digit">
                     ₦{o.amount.toLocaleString()}
                   </span>
                 </TableCell>
+
                 <TableCell>
                   <span className="text-sm text-gray-700">
                     {o.deliveryCategory || "—"}
                   </span>
                 </TableCell>
+
                 <TableCell>
-                  <span className="text-sm text-gray-700">
-                    {o.paymentStatus}
-                  </span>
+                  {/* Payment badges */}
+                  {o.paymentStatus === "completed" ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-green-100 text-green-800">
+                      Completed
+                    </span>
+                  ) : o.paymentStatus === "failed" ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-red-100 text-red-800">
+                      Failed
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-yellow-100 text-yellow-800">
+                      Pending
+                    </span>
+                  )}
                 </TableCell>
+
                 <TableCell>
                   <Select
                     value={o.status}
@@ -179,17 +232,22 @@ export function Orders() {
                       { value: "declined", label: "Declined" },
                       { value: "delivered", label: "Delivered" },
                     ]}
-                    className="w-36"
+                    className="w-32 text-sm"
+                    containerClassName="select-compact"
                   />
                 </TableCell>
+
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant="secondary"
-                      onClick={() => alert("View details not implemented yet")}
+                    <button
+                      title="View details"
+                      onClick={() =>
+                        (window.location.href = `/admin/orders/${o.id}`)
+                      }
+                      className="p-2 rounded-md hover:bg-gray-100"
                     >
-                      View Details
-                    </Button>
+                      <Eye className="w-5 h-5" />
+                    </button>
                   </div>
                 </TableCell>
               </TableRow>

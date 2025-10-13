@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 interface TableProps {
   headers: string[];
@@ -7,16 +7,24 @@ interface TableProps {
   emptyMessage?: string;
 }
 
-export function Table({ headers, children, loading, emptyMessage = 'No data available' }: TableProps) {
+export function Table({
+  headers,
+  children,
+  loading,
+  emptyMessage = "No data available",
+}: TableProps) {
   if (loading) {
     return (
       <div className="card overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto hide-scrollbar">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 {headers.map((header, idx) => (
-                  <th key={idx} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    key={idx}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     {header}
                   </th>
                 ))}
@@ -45,12 +53,15 @@ export function Table({ headers, children, loading, emptyMessage = 'No data avai
 
   return (
     <div className="card overflow-hidden">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto hide-scrollbar">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               {headers.map((header, idx) => (
-                <th key={idx} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th
+                  key={idx}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   {header}
                 </th>
               ))}
@@ -61,7 +72,10 @@ export function Table({ headers, children, loading, emptyMessage = 'No data avai
               children
             ) : (
               <tr>
-                <td colSpan={headers.length} className="px-6 py-4 text-center text-gray-500">
+                <td
+                  colSpan={headers.length}
+                  className="px-6 py-4 text-center text-gray-500"
+                >
                   {emptyMessage}
                 </td>
               </tr>
@@ -79,11 +93,13 @@ interface TableRowProps {
   className?: string;
 }
 
-export function TableRow({ children, onClick, className = '' }: TableRowProps) {
+export function TableRow({ children, onClick, className = "" }: TableRowProps) {
   return (
     <tr
       onClick={onClick}
-      className={`transition-colors duration-150 ${onClick ? 'cursor-pointer hover:bg-gray-50' : ''} ${className}`}
+      className={`transition-colors duration-150 ${
+        onClick ? "cursor-pointer hover:bg-gray-50" : ""
+      } ${className}`}
     >
       {children}
     </tr>
@@ -95,9 +111,9 @@ interface TableCellProps {
   className?: string;
 }
 
-export function TableCell({ children, className = '' }: TableCellProps) {
+export function TableCell({ children, className = "" }: TableCellProps) {
   return (
-    <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${className}`}>
+    <td className={`px-6 py-4 align-top text-sm text-gray-900 ${className}`}>
       {children}
     </td>
   );
