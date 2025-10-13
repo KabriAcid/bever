@@ -12,6 +12,8 @@ import {
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 import { saveClientOrder } from "../api/localOrdersClient";
+// also persist an admin-visible order so the admin Orders page (localOrders) can list it
+import { createOrder as createAdminOrder } from "../../admin/api/localOrders";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
@@ -68,7 +70,29 @@ const CheckoutPage: React.FC = () => {
           deliveredAt: null,
         };
 
+        // save to client-side order list (for user)
         await saveClientOrder(orderPayload);
+
+        // also create an admin-facing order record in the admin local storage
+        try {
+          const itemsCount = cartItems.reduce((s, it) => s + it.quantity, 0);
+          await createAdminOrder({
+            userName:
+              user?.businessName ||
+              user?.phoneNumber ||
+              user?.beverCode ||
+              "Guest",
+            items: itemsCount,
+            amount: finalTotal,
+            status: "pending",
+            paymentStatus:
+              paymentMethod === "transfer" ? "pending" : "completed",
+            deliveryCategory: "standard",
+          });
+        } catch (e) {
+          // admin order persistence is best-effort; continue even if it fails
+          console.warn("Failed to create admin order record", e);
+        }
       } catch (e) {
         console.error("Failed to persist client order", e);
       }

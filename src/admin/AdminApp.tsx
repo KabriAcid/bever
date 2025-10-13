@@ -11,6 +11,7 @@ import { Activity } from "./pages/Activity";
 import { Notifications } from "./pages/Notifications";
 import { Settings } from "./pages/Settings";
 import { Locations } from "./pages/Locations";
+import { Orders } from "./pages/Orders";
 import { Login } from "./pages/Login";
 
 function AdminRoutes() {
@@ -28,6 +29,7 @@ function AdminRoutes() {
         <Route path="products" element={<Products />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="transactions" element={<Transactions />} />
+        <Route path="orders" element={<Orders />} />
         <Route path="referrals" element={<Referrals />} />
         <Route path="activity" element={<Activity />} />
         <Route path="notifications" element={<Notifications />} />
