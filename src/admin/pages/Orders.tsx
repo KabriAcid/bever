@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Table, TableRow, TableCell } from "../ui/Table";
 import { Select } from "../ui/Select";
 import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
 import { Eye, RefreshCw } from "lucide-react";
 import { getOrders, seedIfEmpty, updateOrderStatus } from "../api/localOrders";
 import { motion } from "framer-motion";

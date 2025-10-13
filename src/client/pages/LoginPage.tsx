@@ -171,6 +171,17 @@ const LoginPage: React.FC = () => {
           </div>
         </motion.div>
       </div>
+      {/* Admin link - fixed bottom */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-primary-100 px-6 py-3 z-20">
+        <div className="max-w-md mx-auto text-center">
+          <Link
+            to="/admin"
+            className="text-sm text-primary-950 font-medium hover:underline"
+          >
+            Admin? Sign in here
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

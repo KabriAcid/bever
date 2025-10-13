@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Facebook, Chrome, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Facebook, Chrome } from "lucide-react";
 import { useAdminAuth } from "../contexts/AdminAuthContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
