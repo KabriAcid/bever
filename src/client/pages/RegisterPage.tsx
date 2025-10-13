@@ -331,8 +331,8 @@ const RegisterPage: React.FC = () => {
                 <div className="border-2 border-dashed border-primary-200 rounded-2xl p-8 text-center">
                   {formData.shopPhoto ? (
                     <div className="space-y-4">
-                      <div className="w-20 h-20 bg-accent-100 rounded-full flex items-center justify-center mx-auto">
-                        <Check className="w-10 h-10 text-accent-600" />
+                      <div className="w-20 h-20 bg-primary-200 rounded-full flex items-center justify-center mx-auto">
+                        <Check className="w-10 h-10 text-accent" />
                       </div>
                       <div>
                         <p className="font-medium text-primary-950">
@@ -379,11 +379,11 @@ const RegisterPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="bg-accent-50 border border-accent-200 rounded-xl p-4">
-                  <h4 className="font-medium text-accent-800 mb-2">
+                <div className="bg-accent-50 border border-primary-200 rounded-xl p-4">
+                  <h4 className="font-medium text-accent mb-2">
                     Photo Guidelines:
                   </h4>
-                  <ul className="text-sm text-accent-700 space-y-1">
+                  <ul className="text-sm text-accent space-y-1">
                     <li>• Ensure the shop name/signage is visible</li>
                     <li>• Take the photo during daylight for clarity</li>
                     <li>• Include the full entrance or facade</li>
@@ -456,9 +456,7 @@ const RegisterPage: React.FC = () => {
                 <div className="border-t border-primary-100 pt-4">
                   <div className="flex items-center justify-between">
                     <span className="text-primary-600">Shop Photo:</span>
-                    <span className="text-accent-600 font-medium">
-                      ✓ Uploaded
-                    </span>
+                    <span className="text-accent font-medium">✓ Uploaded</span>
                   </div>
                 </div>
               </div>

@@ -13,14 +13,14 @@ const ProfileCompletionComponent: React.FC<ProfileCompletionProps> = ({
     <div className="card">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-medium text-primary-950">Profile Completion</h3>
-        <span className="text-2xl font-bold text-accent-600">
+        <span className="text-2xl font-bold text-accent">
           {completion.percentage}%
         </span>
       </div>
 
       <div className="w-full bg-primary-100 rounded-full h-3 mb-4">
         <div
-          className="bg-gradient-to-r from-accent-500 to-accent-600 h-3 rounded-full transition-all duration-500"
+          className="bg-gradient-to-r from-accent to-accent h-3 rounded-full transition-all duration-500"
           style={{ width: `${completion.percentage}%` }}
         />
       </div>
@@ -40,7 +40,7 @@ const ProfileCompletionComponent: React.FC<ProfileCompletionProps> = ({
       )}
 
       {completion.percentage === 100 && (
-        <div className="flex items-center gap-2 text-sm text-accent-700 bg-accent-50 p-3 rounded-lg">
+        <div className="flex items-center gap-2 text-sm text-accent bg-accent-50 p-3 rounded-lg">
           <CheckCircle2 className="w-5 h-5" />
           <span className="font-medium">Profile Complete! You're all set.</span>
         </div>

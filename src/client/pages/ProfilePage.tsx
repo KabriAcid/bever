@@ -106,7 +106,7 @@ const ProfilePage: React.FC = () => {
     switch (user?.verificationStatus) {
       case "Verified":
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent-100 text-accent-700 text-sm font-medium rounded-full">
+          <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary-200 text-accent text-sm font-medium rounded-full">
             <Check className="w-4 h-4" />
             Verified
           </span>
@@ -152,7 +152,7 @@ const ProfilePage: React.FC = () => {
       const colors = {
         weak: "bg-red-500",
         medium: "bg-orange-500",
-        strong: "bg-accent-500",
+        strong: "bg-accent",
       };
 
       return (
@@ -263,7 +263,7 @@ const ProfilePage: React.FC = () => {
             </div>
             <button
               onClick={() => setShowAvatarPhoto(true)}
-              className="absolute -bottom-1 -right-1 p-2 bg-accent-500 text-white rounded-full shadow-lg hover:bg-accent-600 transition-colors"
+              className="absolute -bottom-1 -right-1 p-2 bg-accent text-white rounded-full shadow-lg hover:bg-accent transition-colors"
             >
               <Camera className="w-4 h-4" />
             </button>
@@ -299,13 +299,13 @@ const ProfilePage: React.FC = () => {
           </div>
 
           <div
-            className="text-center p-3 bg-accent-50 rounded-xl cursor-pointer hover:bg-accent-100 transition-colors"
+            className="text-center p-3 bg-accent-50 rounded-xl cursor-pointer hover:bg-primary-200 transition-colors"
             onClick={handleCopyCode}
           >
-            <div className="text-lg sm:text-2xl md:text-3xl font-bold text-accent-700 truncate">
+            <div className="text-lg sm:text-2xl md:text-3xl font-bold text-accent truncate">
               {user?.beverCode}
             </div>
-            <div className="text-sm sm:text-xs text-accent-600 flex items-center justify-center gap-1">
+            <div className="text-sm sm:text-xs text-accent flex items-center justify-center gap-1">
               {copied ? (
                 <Check className="w-3 h-3 sm:w-4 sm:h-4" />
               ) : (
@@ -496,12 +496,12 @@ const ProfilePage: React.FC = () => {
                 {hasPin ? (
                   <>
                     <div className="flex items-center gap-3 p-3 bg-accent-50 rounded-xl">
-                      <Lock className="w-5 h-5 text-accent-600" />
+                      <Lock className="w-5 h-5 text-accent" />
                       <div>
-                        <span className="text-accent-800 font-medium">
+                        <span className="text-accent font-medium">
                           PIN is secure
                         </span>
-                        <p className="text-xs text-accent-600">
+                        <p className="text-xs text-accent">
                           Last changed: 2 days ago
                         </p>
                       </div>

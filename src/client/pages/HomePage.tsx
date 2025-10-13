@@ -127,7 +127,7 @@ const HomePage: React.FC = () => {
           >
             <Filter className="w-4 h-4" />
             {activeFiltersCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-accent-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {activeFiltersCount}
               </span>
             )}
@@ -299,7 +299,7 @@ const HomePage: React.FC = () => {
                         </span>
                         <button
                           onClick={() => handleQuantityChange(product.id, 1)}
-                          className="w-8 h-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg flex items-center justify-center transition-colors"
+                          className="w-8 h-8 bg-accent hover:bg-accent text-white rounded-lg flex items-center justify-center transition-colors"
                         >
                           <Plus className="w-4 h-4" />
                         </button>
@@ -307,7 +307,7 @@ const HomePage: React.FC = () => {
                     ) : (
                       <button
                         onClick={() => handleQuantityChange(product.id, 1)}
-                        className="w-8 h-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg flex items-center justify-center transition-colors"
+                        className="w-8 h-8 bg-accent hover:bg-accent text-white rounded-lg flex items-center justify-center transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
@@ -335,7 +335,7 @@ const HomePage: React.FC = () => {
                         </span>
                         <button
                           onClick={() => handleQuantityChange(product.id, 1)}
-                          className="flex-1 h-10 bg-accent-500 hover:bg-accent-600 text-white rounded-lg flex items-center justify-center transition-colors"
+                          className="flex-1 h-10 bg-accent hover:bg-accent text-white rounded-lg flex items-center justify-center transition-colors"
                         >
                           <Plus className="w-4 h-4" />
                         </button>
@@ -343,7 +343,7 @@ const HomePage: React.FC = () => {
                     ) : (
                       <button
                         onClick={() => handleQuantityChange(product.id, 1)}
-                        className="w-full h-10 bg-accent-500 hover:bg-accent-600 text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
+                        className="w-full h-10 bg-accent hover:bg-accent text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                         <span className="text-sm font-medium">Add to Cart</span>

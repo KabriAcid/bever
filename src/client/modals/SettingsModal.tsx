@@ -77,7 +77,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   />
                   <div
                     className={`w-10 h-6 rounded-full transition-colors ${
-                      value ? "bg-accent-500" : "bg-primary-200"
+                      value ? "bg-accent" : "bg-primary-200"
                     }`}
                   >
                     <div
@@ -187,7 +187,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 <div
                   className={`w-10 h-6 rounded-full transition-colors ${
                     formData.privacy.dataSharing
-                      ? "bg-accent-500"
+                      ? "bg-accent"
                       : "bg-primary-200"
                   }`}
                 >

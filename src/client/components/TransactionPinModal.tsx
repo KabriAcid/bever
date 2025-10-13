@@ -1,42 +1,44 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, Eye, EyeOff } from 'lucide-react';
-import { usePin } from '../contexts/PinContext';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Lock, Eye, EyeOff } from "lucide-react";
+import { usePin } from "../contexts/PinContext";
 
 interface TransactionPinModalProps {
   isOpen: boolean;
 }
 
-const TransactionPinModal: React.FC<TransactionPinModalProps> = ({ isOpen }) => {
+const TransactionPinModal: React.FC<TransactionPinModalProps> = ({
+  isOpen,
+}) => {
   const { setPin } = usePin();
-  const [pin, setPinValue] = useState('');
-  const [confirmPin, setConfirmPin] = useState('');
+  const [pin, setPinValue] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
   const [showPin, setShowPin] = useState(false);
-  const [error, setError] = useState('');
-  const [step, setStep] = useState<'create' | 'confirm'>('create');
+  const [error, setError] = useState("");
+  const [step, setStep] = useState<"create" | "confirm">("create");
 
   const handlePinChange = (value: string) => {
     if (value.length <= 6 && /^\d*$/.test(value)) {
-      if (step === 'create') {
+      if (step === "create") {
         setPinValue(value);
-        setError('');
+        setError("");
       } else {
         setConfirmPin(value);
-        setError('');
+        setError("");
       }
     }
   };
 
   const handleContinue = () => {
-    if (step === 'create') {
+    if (step === "create") {
       if (pin.length < 4) {
-        setError('PIN must be at least 4 digits');
+        setError("PIN must be at least 4 digits");
         return;
       }
-      setStep('confirm');
+      setStep("confirm");
     } else {
       if (pin !== confirmPin) {
-        setError('PINs do not match');
+        setError("PINs do not match");
         return;
       }
       setPin(pin);
@@ -44,9 +46,9 @@ const TransactionPinModal: React.FC<TransactionPinModalProps> = ({ isOpen }) => 
   };
 
   const handleBack = () => {
-    setStep('create');
-    setConfirmPin('');
-    setError('');
+    setStep("create");
+    setConfirmPin("");
+    setError("");
   };
 
   return (
@@ -65,27 +67,26 @@ const TransactionPinModal: React.FC<TransactionPinModalProps> = ({ isOpen }) => 
             className="bg-white rounded-2xl p-6 w-full max-w-md"
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lock className="w-8 h-8 text-accent-600" />
+              <div className="w-16 h-16 bg-primary-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-accent" />
               </div>
               <h2 className="text-2xl font-bold text-primary-950 mb-2">
-                {step === 'create' ? 'Create Transaction PIN' : 'Confirm PIN'}
+                {step === "create" ? "Create Transaction PIN" : "Confirm PIN"}
               </h2>
               <p className="text-primary-600">
-                {step === 'create' 
-                  ? 'Set up a 4-6 digit PIN to secure your transactions'
-                  : 'Please confirm your PIN'
-                }
+                {step === "create"
+                  ? "Set up a 4-6 digit PIN to secure your transactions"
+                  : "Please confirm your PIN"}
               </p>
             </div>
 
             <div className="space-y-4">
               <div className="relative">
                 <input
-                  type={showPin ? 'text' : 'password'}
-                  value={step === 'create' ? pin : confirmPin}
+                  type={showPin ? "text" : "password"}
+                  value={step === "create" ? pin : confirmPin}
                   onChange={(e) => handlePinChange(e.target.value)}
-                  placeholder={step === 'create' ? 'Enter PIN' : 'Confirm PIN'}
+                  placeholder={step === "create" ? "Enter PIN" : "Confirm PIN"}
                   className="input-field text-center text-2xl tracking-widest pr-12"
                   maxLength={6}
                   autoFocus
@@ -95,7 +96,11 @@ const TransactionPinModal: React.FC<TransactionPinModalProps> = ({ isOpen }) => 
                   onClick={() => setShowPin(!showPin)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-400 hover:text-primary-600"
                 >
-                  {showPin ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPin ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
 
@@ -110,20 +115,19 @@ const TransactionPinModal: React.FC<TransactionPinModalProps> = ({ isOpen }) => 
               )}
 
               <div className="flex gap-3">
-                {step === 'confirm' && (
-                  <button
-                    onClick={handleBack}
-                    className="btn-secondary flex-1"
-                  >
+                {step === "confirm" && (
+                  <button onClick={handleBack} className="btn-secondary flex-1">
                     Back
                   </button>
                 )}
                 <button
                   onClick={handleContinue}
-                  disabled={step === 'create' ? pin.length < 4 : confirmPin.length < 4}
+                  disabled={
+                    step === "create" ? pin.length < 4 : confirmPin.length < 4
+                  }
                   className="btn-primary flex-1"
                 >
-                  {step === 'create' ? 'Continue' : 'Set PIN'}
+                  {step === "create" ? "Continue" : "Set PIN"}
                 </button>
               </div>
             </div>

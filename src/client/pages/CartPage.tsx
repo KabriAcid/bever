@@ -131,7 +131,7 @@ const CartPage: React.FC = () => {
                         onClick={() =>
                           handleQuantityChange(productId, quantity - 1)
                         }
-                        className="w-8 h-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg flex items-center justify-center transition-colors"
+                        className="w-8 h-8 bg-accent hover:bg-accent text-white rounded-lg flex items-center justify-center transition-colors"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
@@ -142,7 +142,7 @@ const CartPage: React.FC = () => {
                         onClick={() =>
                           handleQuantityChange(productId, quantity + 1)
                         }
-                        className="w-8 h-8 bg-accent-500 hover:bg-accent-600 text-white rounded-lg flex items-center justify-center transition-colors"
+                        className="w-8 h-8 bg-accent hover:bg-accent text-white rounded-lg flex items-center justify-center transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
@@ -169,7 +169,7 @@ const CartPage: React.FC = () => {
             </span>
           </div>
           {deliveryFee === 0 && (
-            <p className="text-xs text-accent-600">
+            <p className="text-xs text-accent">
               Free delivery on orders above ₦5,000
             </p>
           )}

@@ -99,8 +99,8 @@ const CheckoutPage: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
-          <div className="w-20 h-20 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Check className="w-10 h-10 text-accent-600" />
+          <div className="w-20 h-20 bg-primary-200 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Check className="w-10 h-10 text-accent" />
           </div>
           <h2 className="text-2xl font-bold text-primary-950 mb-2">
             Order Placed!
@@ -262,23 +262,19 @@ const CheckoutPage: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className="mt-4 p-4 bg-accent-50 border border-accent-200 rounded-xl"
+              className="mt-4 p-4 bg-accent-50 border border-primary-200 rounded-xl"
             >
-              <h4 className="font-medium text-accent-800 mb-3">
-                Transfer Details
-              </h4>
+              <h4 className="font-medium text-accent mb-3">Transfer Details</h4>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-accent-700">
-                    Account Number:
-                  </span>
+                  <span className="text-sm text-accent">Account Number:</span>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-medium text-accent-900">
+                    <span className="font-mono font-medium text-accent">
                       {virtualAccount.accountNumber}
                     </span>
                     <button
                       onClick={handleCopyAccount}
-                      className="p-1 text-accent-600 hover:text-accent-800 transition-colors"
+                      className="p-1 text-accent hover:text-accent transition-colors"
                     >
                       {copied ? (
                         <Check className="w-4 h-4" />
@@ -289,25 +285,25 @@ const CheckoutPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-accent-700">Bank:</span>
-                  <span className="font-medium text-accent-900">
+                  <span className="text-sm text-accent">Bank:</span>
+                  <span className="font-medium text-accent">
                     {virtualAccount.bankName}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-accent-700">Account Name:</span>
-                  <span className="font-medium text-accent-900">
+                  <span className="text-sm text-accent">Account Name:</span>
+                  <span className="font-medium text-accent">
                     {virtualAccount.accountName}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-accent-700">Amount:</span>
-                  <span className="font-bold text-accent-900">
+                  <span className="text-sm text-accent">Amount:</span>
+                  <span className="font-bold text-accent">
                     ₦{finalTotal.toLocaleString()}
                   </span>
                 </div>
               </div>
-              <p className="text-xs text-accent-600 mt-3">
+              <p className="text-xs text-accent mt-3">
                 Transfer the exact amount to complete your order. Your order
                 will be confirmed automatically.
               </p>
