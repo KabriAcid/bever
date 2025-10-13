@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Facebook, Chrome } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useAdminAuth } from "../contexts/AdminAuthContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
@@ -111,14 +111,13 @@ export function Login() {
                 ) : (
                   <Eye className="w-5 h-5" />
                 )}
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 text-primary-400 p-2"
-                style={{ transform: 'translateY(calc(-50% + 4px))' }}
-                tabIndex={-1}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-              >
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
                   name="rememberMe"
                   checked={formData.rememberMe}
                   onChange={handleInputChange}
@@ -139,13 +138,16 @@ export function Login() {
             </Button>
 
             <div className="text-center">
-              <span className="text-primary-600">Don't have an account? </span>
-              <a
-                href="/"
-                className="text-primary-800 hover:text-primary-950 font-medium"
-              >
-                Sign Up
-              </a>
+              <span className="text-primary-600">
+                Back to{" "}
+                <a
+                  href="/"
+                  className="text-primary-800 hover:text-primary-950 font-medium"
+                >
+                  Home
+                </a>
+                ?{" "}
+              </span>
             </div>
           </form>
         </motion.div>

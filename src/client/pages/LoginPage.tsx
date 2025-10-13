@@ -83,12 +83,12 @@ const LoginPage: React.FC = () => {
           transition={{ delay: 0.1 }}
           className="max-w-md mx-auto"
         >
-          <div className="mb-8">
+          {/* <div className="mb-8 text-center">
             <h2 className="text-2xl font-bold text-primary-950 mb-2">
               Welcome back
             </h2>
             <p className="text-primary-600">Sign in to your account</p>
-          </div>
+          </div> */}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
