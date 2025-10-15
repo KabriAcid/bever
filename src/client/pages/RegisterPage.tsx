@@ -43,6 +43,7 @@ const RegisterPage: React.FC = () => {
         }
 
         const data = await response.json();
+        console.log("Fetched categories:", data); // Debugging log
         setCategories(data);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -353,27 +354,33 @@ const RegisterPage: React.FC = () => {
                   <label className="block text-sm font-medium text-primary-700 mb-2">
                     Customer Category *
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {categories.map((category) => (
-                      <button
-                        key={category.id}
-                        type="button"
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            customerCategory: category.name,
-                          }))
-                        }
-                        className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
-                          formData.customerCategory === category.name
-                            ? "border-primary-950 bg-primary-950 text-white"
-                            : "border-primary-200 text-primary-700 hover:border-primary-300"
-                        }`}
-                      >
-                        {category.name}
-                      </button>
-                    ))}
-                  </div>
+                  {categories.length === 0 ? (
+                    <div className="flex justify-center items-center h-16 border-2 border-primary-200 rounded-xl text-primary-600">
+                      No categories available
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 gap-3">
+                      {categories.map((category) => (
+                        <button
+                          key={category.id}
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              customerCategory: category.name,
+                            }))
+                          }
+                          className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                            formData.customerCategory === category.name
+                              ? "border-primary-950 bg-primary-950 text-white"
+                              : "border-primary-200 text-primary-700 hover:border-primary-300"
+                          }`}
+                        >
+                          {category.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div>
