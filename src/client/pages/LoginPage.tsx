@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 import { loginValidationSchema } from "../../utils/validation";
+import * as yup from "yup";
+import { loginUser } from "../../utils/authClient";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    email: "",
+    identifier: "", // Can be phone number or username
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -28,25 +30,16 @@ const LoginPage: React.FC = () => {
     try {
       await loginValidationSchema.validate(formData, { abortEarly: false });
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock user data - in real app, this would come from API
-      const mockUser = {
-        id: "1",
-        name: "Masakai",
-        email: formData.email,
-        role: "user",
-        createdAt: new Date(),
-      };
-
-      login(mockUser);
+      const response = await loginUser(formData.identifier, formData.password);
+      login(response.user);
       navigate("/home");
     } catch (err) {
-      if (err.name === "ValidationError") {
+      if (err instanceof yup.ValidationError) {
         setError(err.errors.join(", "));
+      } else if (err instanceof Error) {
+        setError(err.message || "An error occurred during login");
       } else {
-        setError("Invalid email or password");
+        setError("An unexpected error occurred");
       }
     } finally {
       setIsLoading(false);
@@ -85,15 +78,15 @@ const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-primary-700 mb-2">
-                Email
+                Phone Number or Username
               </label>
               <div className="relative">
                 <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
+                  type="text"
+                  name="identifier"
+                  value={formData.identifier}
                   onChange={handleInputChange}
-                  placeholder="example@example.com"
+                  placeholder="Enter your phone number or username"
                   className="input-field"
                   required
                 />

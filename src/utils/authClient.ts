@@ -2,30 +2,40 @@ import axios from "axios";
 
 const API_BASE_URL = "/api/auth";
 
-export const loginUser = async (email, password) => {
+interface User {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+}
+
+export const loginUser = async (
+  identifier: string,
+  password: string
+): Promise<{ user: User }> => {
   try {
     const response = await axios.post(`${API_BASE_URL}/login`, {
-      email,
+      identifier,
       password,
     });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response?.data || { message: "An error occurred" };
   }
 };
 
-export const verifyToken = async () => {
+export const verifyToken = async (): Promise<{ valid: boolean }> => {
   try {
     const response = await axios.get(`${API_BASE_URL}/verify`, {
       withCredentials: true,
     });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response?.data || { message: "An error occurred" };
   }
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<{ success: boolean }> => {
   try {
     const response = await axios.post(
       `${API_BASE_URL}/logout`,
@@ -35,7 +45,7 @@ export const logoutUser = async () => {
       }
     );
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw error.response?.data || { message: "An error occurred" };
   }
 };
