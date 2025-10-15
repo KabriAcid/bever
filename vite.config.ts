@@ -7,12 +7,12 @@ export default defineConfig({
   server: {
     port: 5173,
     host: "0.0.0.0",
-    // allow specific ngrok hosts (add yours here) so the dev server accepts proxied requests
-    // You can add multiple entries or use a leading dot to allow subdomains, e.g. ".ngrok-free.app"
-    allowedHosts: [
-      "75c09030ccd2.ngrok-free.app",
-      ".ngrok-free.app",
-      ".ngrok.io",
-    ],
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -29,6 +29,28 @@ const RegisterPage: React.FC = () => {
     latitude: null as number | null, // New field for latitude
     longitude: null as number | null, // New field for longitude
   });
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -332,23 +354,23 @@ const RegisterPage: React.FC = () => {
                     Customer Category *
                   </label>
                   <div className="grid grid-cols-3 gap-3">
-                    {["Office", "Provision Store", "Home"].map((category) => (
+                    {categories.map((category) => (
                       <button
-                        key={category}
+                        key={category.id}
                         type="button"
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
-                            customerCategory: category,
+                            customerCategory: category.name,
                           }))
                         }
                         className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
-                          formData.customerCategory === category
+                          formData.customerCategory === category.name
                             ? "border-primary-950 bg-primary-950 text-white"
                             : "border-primary-200 text-primary-700 hover:border-primary-300"
                         }`}
                       >
-                        {category}
+                        {category.name}
                       </button>
                     ))}
                   </div>

@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 
 // auth
 import authRoutes from "./routes/auth.js";
+import categoriesRoutes from "./routes/categories.js";
 
 // global index (handles remaining routes)
 import routes from "./routes/routes.js";
@@ -45,6 +46,7 @@ app.use(cookieParser());
 
 // Core Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/categories", categoriesRoutes);
 
 // Global Router (handles all other feature routes)
 app.use("/api", routes);
