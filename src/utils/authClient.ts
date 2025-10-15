@@ -4,9 +4,27 @@ const API_BASE_URL = "/api/auth";
 
 interface User {
   id: string;
-  name: string;
-  role: string;
-  email: string;
+  businessName: string;
+  businessAddress: string;
+  ward: string;
+  subArea?: string;
+  customerCategory:
+    | "Office"
+    | "Provision Store"
+    | "Home"
+    | "Retailer"
+    | "Wholesaler"
+    | "Restaurant"
+    | "Hotel"
+    | "Supermarket";
+  phoneNumber: string;
+  beverCode: string;
+  verificationStatus: "Pending" | "Verified" | "Agent Visit";
+  shopPhoto?: string;
+  avatar?: string;
+  coverPhoto?: string;
+  createdAt: Date;
+  hasPin: boolean;
 }
 
 export const loginUser = async (

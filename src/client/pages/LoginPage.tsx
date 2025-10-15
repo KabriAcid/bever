@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
     try {
       await loginValidationSchema.validate(formData, { abortEarly: false });
 
-      const response = await loginUser(formData.identifier, formData.password);
+      const response = await loginUser(formData.identifier,  formData.password);
       login(response.user);
       navigate("/home");
     } catch (err) {
