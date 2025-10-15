@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import MockRegister from "./client/pages/MockRegister";
 
 // Lazy load both UserApp and AdminApp for code splitting
 const UserApp = lazy(() => import("./client/UserApp"));
@@ -22,6 +23,7 @@ const App: React.FC = () => {
       >
         <Routes>
           <Route path="/admin/*" element={<AdminApp />} />
+          <Route path="/mock-register" element={<MockRegister />} />
           <Route path="/*" element={<UserApp />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

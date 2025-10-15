@@ -6,7 +6,7 @@ const router = express.Router();
 // Get all categories
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM categories");
+    const [rows] = await pool.query("SELECT * FROM delivery_categories");
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 // Get a single category by ID
 router.get("/:id", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM categories WHERE id = ?", [
+    const [rows] = await pool.query("SELECT * FROM delivery_categories WHERE id = ?", [
       req.params.id,
     ]);
     if (rows.length === 0) {
