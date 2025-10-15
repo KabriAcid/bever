@@ -26,9 +26,12 @@ const MockRegister: React.FC = () => {
     setError("");
 
     try {
-      await axios.post("/api/mock-register", formData);
+      console.log("Submitting form data:", formData);
+      const response = await axios.post("/api/mock-register", formData); // Corrected endpoint
+      console.log("Response from backend:", response.data);
       alert("User registered successfully!");
     } catch (err: any) {
+      console.error("Error during registration:", err);
       setError(
         err.response?.data?.message || "An error occurred during registration"
       );

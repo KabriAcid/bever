@@ -48,6 +48,7 @@ app.use(cookieParser());
 // Core Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoriesRoutes);
+console.log("Registering route: /api/mock-register");
 app.use("/api/mock-register", mockRegisterRoutes);
 
 // Global Router (handles all other feature routes)
