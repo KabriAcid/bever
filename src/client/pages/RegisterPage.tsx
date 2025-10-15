@@ -25,6 +25,9 @@ const RegisterPage: React.FC = () => {
     customerCategory: "",
     phoneNumber: "",
     shopPhoto: null as File | null,
+    isAtDeliveryLocation: "", // New field for location confirmation
+    latitude: null as number | null, // New field for latitude
+    longitude: null as number | null, // New field for longitude
   });
 
   const handleInputChange = (
@@ -38,6 +41,28 @@ const RegisterPage: React.FC = () => {
     // Reset sub area when ward changes
     if (name === "ward") {
       setFormData((prev) => ({ ...prev, subArea: "" }));
+    }
+  };
+
+  const handleLocationPermission = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setFormData((prev) => ({
+            ...prev,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }));
+        },
+        (error) => {
+          console.error("Location access denied:", error);
+          alert(
+            "We need your location to ensure precise delivery. Please enable location access in your browser settings."
+          );
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
     }
   };
 
@@ -83,13 +108,15 @@ const RegisterPage: React.FC = () => {
           | "Provision Store"
           | "Home",
         phoneNumber: formData.phoneNumber,
-        beverCode,
+        latitude: formData.latitude, // Include latitude
+        longitude: formData.longitude, // Include longitude
         verificationStatus: "Pending" as const,
         shopPhoto: formData.shopPhoto
           ? URL.createObjectURL(formData.shopPhoto)
           : undefined,
         createdAt: new Date(),
         hasPin: false,
+        beverCode, // Add the missing beverCode property
       };
 
       login(newUser);
@@ -123,7 +150,8 @@ const RegisterPage: React.FC = () => {
           formData.businessAddress &&
           formData.ward &&
           formData.customerCategory &&
-          formData.phoneNumber
+          formData.phoneNumber &&
+          formData.isAtDeliveryLocation // Ensure location confirmation is selected
         );
       case 2:
         return formData.shopPhoto;
@@ -184,6 +212,44 @@ const RegisterPage: React.FC = () => {
               </div>
 
               <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-primary-700 mb-2">
+                    Are you at your delivery location *
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="isAtDeliveryLocation"
+                        value="yes"
+                        onChange={(e) => {
+                          handleInputChange(e);
+                          handleLocationPermission();
+                        }}
+                        checked={formData.isAtDeliveryLocation === "yes"}
+                        className="radio-input"
+                      />
+                      <span>Yes</span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="isAtDeliveryLocation"
+                        value="no"
+                        onChange={handleInputChange}
+                        checked={formData.isAtDeliveryLocation === "no"}
+                        className="radio-input"
+                      />
+                      <span>No</span>
+                    </label>
+                  </div>
+                  <p className="text-sm text-primary-600 mt-2">
+                    We use your location to ensure precise delivery to your
+                    shop, restaurant, or hotel. Please enable location access if
+                    you select "Yes."
+                  </p>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-primary-700 mb-2">
                     Business/Shop Name *
