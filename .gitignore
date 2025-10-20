@@ -1,5 +1,4 @@
 node_modules
-dist
 dist-ssr
 *.local
 .env
@@ -24,5 +23,6 @@ storybook-static
 /.netlify
 README.md
 /docs   
+.zip
 .exe
 *.sql

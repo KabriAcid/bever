@@ -27,7 +27,10 @@ const MockRegister: React.FC = () => {
 
     try {
       console.log("Submitting form data:", formData);
-      const response = await axios.post("/api/mock-register", formData); // Corrected endpoint
+      const response = await axios.post(
+        "http://localhost:5000/mock-register",
+        formData
+      ); // Direct backend call
       console.log("Response from backend:", response.data);
       alert("User registered successfully!");
     } catch (err: any) {
